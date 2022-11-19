@@ -69,7 +69,7 @@ def mpg_get_frame_size(header):
             (header[13:15] == '00') or
             (header[16:20] == '1111') or
             (header[20:22] == '11') ):
-        return 0, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
+        return 0, None, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
 
     #collect data from header:
     version =   int(header[11:13],2)
@@ -77,9 +77,10 @@ def mpg_get_frame_size(header):
     pad     =   int(header[22],2)
     brx     =   int(header[16:20],2)
     srx     =   int(header[20:22],2)
+    prot    =   (int(header[15],2) != 1)       ###Here a prot_bit == 1 means there is no checksum
 
     if (mpeg_versions[version] != 1) or (mpeg_layers[layer] != 3):
-        return 0, None, None, None, None
+        return 0, None, None, None, None, None
 
     bitrate     =   mpeg_bitrates[version][layer][brx]
     samprate    =   mpeg_srates[version][srx]
@@ -94,7 +95,7 @@ def mpg_get_frame_size(header):
         print("version:",mpeg_versions[version], "layer:",mpeg_layers[layer], "samprate:",samprate)
         print(version, layer, pad, brx, srx)
         raise ValueError
-    return int(fsize), mpeg_versions[version], mpeg_layers[layer], bitrate, samprate
+    return int(fsize), mpeg_versions[version], mpeg_layers[layer], bitrate, samprate, prot
 
 def sift_frames(mp3_bits):
     '''
@@ -107,11 +108,11 @@ def sift_frames(mp3_bits):
     while (start < end):
         header = mp3_bits[start:start + 32]
 
-        fsize, version, layer, bitrate, samprate = mpg_get_frame_size(header)
+        fsize, version, layer, bitrate, samprate, prot = mpg_get_frame_size(header)
 
         if fsize > 0:
-            print("version:",version, "layer:",layer, "bitrate:",bitrate, "samprate:",samprate, "frame size:",fsize)
-            start += 32 + fsize
+            print("version:",version, "layer:",layer, "bitrate:",bitrate, "samprate:",samprate, "frame size:",fsize, "protected:", prot)
+            start += 32 + fsize + (16 * prot)
         else:
             start += 1
 
