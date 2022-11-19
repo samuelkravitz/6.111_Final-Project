@@ -65,9 +65,10 @@ def mpg_get_frame_size(header):
 
     #validity check:
     if  (   (hex(int(header[0:11],2)) != '0x7ff') or
-            (header[12:14] == '01') or
-            (header[14:16] == '00') or
-            (header[16:20] == '1111') ):
+            (header[11:13] == '01') or
+            (header[13:15] == '00') or
+            (header[16:20] == '1111') or
+            (header[20:22] == '11') ):
         return 0, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
 
     #collect data from header:
@@ -76,6 +77,9 @@ def mpg_get_frame_size(header):
     pad     =   int(header[22],2)
     brx     =   int(header[16:20],2)
     srx     =   int(header[20:22],2)
+
+    if (mpeg_versions[version] != 1) or (mpeg_layers[layer] != 3):
+        return 0, None, None, None, None
 
     bitrate     =   mpeg_bitrates[version][layer][brx]
     samprate    =   mpeg_srates[version][srx]
@@ -86,9 +90,11 @@ def mpg_get_frame_size(header):
     try:
         fsize = ( (bps * bitrate * 1000) / samprate ) + (pad * slot_size)
     except:
-        print(version, layer, samprate)
+        print("FAILED: DIAGNOSTIC:")
+        print("version:",mpeg_versions[version], "layer:",mpeg_layers[layer], "samprate:",samprate)
+        print(version, layer, pad, brx, srx)
         raise ValueError
-    return int(fsize), version, layer, bitrate, samprate
+    return int(fsize), mpeg_versions[version], mpeg_layers[layer], bitrate, samprate
 
 def sift_frames(mp3_bits):
     '''
@@ -104,7 +110,7 @@ def sift_frames(mp3_bits):
         fsize, version, layer, bitrate, samprate = mpg_get_frame_size(header)
 
         if fsize > 0:
-            print(version, layer, bitrate, samprate, fsize)
+            print("version:",version, "layer:",layer, "bitrate:",bitrate, "samprate:",samprate, "frame size:",fsize)
             start += 32 + fsize
         else:
             start += 1
@@ -121,7 +127,12 @@ if __name__ == "__main__":
     # size = mpg_get_frame_size(lmao)
     # print(size)
 
-    file = "file_example_MP3_1MG.mp3"
+    file = "sample-3s.mp3"
+
+    from mutagen.mp3 import MP3
+    print('ground truth:')
+    f = MP3(file)
+    print(vars(f.info))
 
     binary_data = []
     with open(file, 'rb') as f:
