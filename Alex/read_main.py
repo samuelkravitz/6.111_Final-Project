@@ -64,7 +64,7 @@ def read_main_data(bitstream, header, side_info):
                 elif (side_info["scfsi"][ch][3] == 0) and (gr == 0):
                     for sfb in range(16,21):
                         scalefac_l[gr,ch,sfb]                       = int(bitstream[ptr: ptr + bitlength_2], 2); ptr += bitlength_2;
-            huffmancodebits()
+            IS, ptr = huffmancodebits(bistream, ptr, gr, ch, header, side_info)
     for b in range(no_ancillary_bits):
         ancillary_bit = int(bitstream[ptr: ptr + 1], 2); ptr += 1;      #i think this is just to kill bit space. manual has it overwriting itself too.
 
@@ -75,10 +75,33 @@ def read_main_data(bitstream, header, side_info):
     }
     return output, ptr
 
-def huffmancodebits():
+def huffmancodebits(bitstream, ptr, gr, ch, header, side_info):
     '''
     supposed to emulate the huffmancodebits function defined in the ISO manual
+    first decode the big values, then decode the count1 values (higher frequencies)
+    oh god
+
+    ARGS:
+        bitstrea -> string of 1s and 0s, note that this is the frame's main data only, nothing else. so you are free to parse it with the ptr
+        ptr -> integer, index of where to start in the bitstream
+        gr -> integer, granule (0 or 1)
+        ch -> integer, channel (0, or 1)
+        header -> dictionary output of read_header()
+        side_info -> dictionary output of read_side_information()
+
+    OUTPUT:
+        OUT -> vector, (576,) containing the decoded values per frequency band
+        prt -> integer, new pointer location in the bitstream
     '''
+    num_bits = side_info["part2_3_length"][gr][ch]
+    bigvalues = side_info["big_values"][gr][ch]
+
+    OUT = np.zeros(shape=(576,), dtype=np.int)
+
+    huff_buffer = ""
+    for l in range(0, bigvalues * 2):
+        
+
     raise NotImplementedError
 
 slen1 = [0,0,0,0,3,1,1,1,2,2,2,3,3,3,4,4]   #both taken from page 32 of ISO pdf
