@@ -69,9 +69,10 @@ def mpg_get_frame_size(header):
             (header[13:15] == '00') or
             (header[16:20] == '1111') or
             (header[20:22] == '11') ):
-        return 0, None, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
+        return 0, None, None, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
 
     #collect data from header:
+    sync = int(header[0:11],2)
     version =   int(header[11:13],2)
     layer   =   int(header[13:15],2)
     pad     =   int(header[22],2)
@@ -79,8 +80,8 @@ def mpg_get_frame_size(header):
     srx     =   int(header[20:22],2)
     prot    =   (int(header[15],2) != 1)       ###Here a prot_bit == 1 means there is no checksum
 
-    if (mpeg_versions[version] != 1) or (mpeg_layers[layer] != 3):
-        return 0, None, None, None, None, None
+    if (mpeg_versions[version] != 1) or (mpeg_layers[layer] != 3) or (srx != 0):
+        return 0, None, None, None, None, None, None
 
     bitrate     =   mpeg_bitrates[version][layer][brx]
     samprate    =   mpeg_srates[version][srx]
@@ -89,45 +90,42 @@ def mpg_get_frame_size(header):
 
     bps = samples / 8.0
     try:
-        fsize = ( (bps * bitrate * 1000) / samprate ) + (pad * slot_size)
+        fsize = (( (bps * bitrate * 1000) / samprate ) + (pad * slot_size))         #without multiplying by 8, it is the number of bytes!
     except:
         print("FAILED: DIAGNOSTIC:")
         print("version:",mpeg_versions[version], "layer:",mpeg_layers[layer], "samprate:",samprate)
         print(version, layer, pad, brx, srx)
         raise ValueError
-    return int(fsize), mpeg_versions[version], mpeg_layers[layer], bitrate, samprate, prot
+    return int(fsize), mpeg_versions[version], mpeg_layers[layer], bitrate, samprate, prot, pad
 
 def sift_frames(mp3_bits):
     '''
-    somethign is broken with it...
+    if the predicted frame size is greater than 0, that means the frame starting at 'start' is a valid mpeg-1 layer III frame
+    the protection bit adds 16 bits to the end of the frame.
     '''
     print("sifting frames...")
     end = len(mp3_bits)
     start = 0
 
+    num_frames = 0
+
     while (start < end):
         header = mp3_bits[start:start + 32]
 
-        fsize, version, layer, bitrate, samprate, prot = mpg_get_frame_size(header)
+        fsize, version, layer, bitrate, samprate, prot, pad = mpg_get_frame_size(header)
 
         if fsize > 0:
-            print("version:",version, "layer:",layer, "bitrate:",bitrate, "samprate:",samprate, "frame size:",fsize, "protected:", prot)
-            start += 32 + fsize + (16 * prot)
+            num_frames += 1
+            print("version:",version, "layer:",layer, "bitrate:",bitrate, "samprate:",samprate, "frame size:",fsize, "protected:", prot, "padded:", pad)
+            start += 32 + (fsize * 8) + (16 * prot)     #fsize output is in bytes, 16 bit checksums may exist too.
         else:
             start += 1
 
+    print("final number of frames:", num_frames)
+    print('estimated sound time:', num_frames * 26/1000)
+
 
 if __name__ == "__main__":
-    #uses MPEG 1 layer 3 bitrate 224 44100 Hz
-    # lmao = "11111111111" + "11" + "01" + "0" + "1100" + "00" + "0" + "0" + "11" + "00" + "0" + "0" + "00"
-    #
-    # size = mpg_get_frame_size(lmao)
-    # print(size)
-    #
-    # lmao = "11111111111" + "10" + "01" + "0" + "0101" + "00" + "0" + "0" + "11" + "00" + "0" + "0" + "00"
-    # size = mpg_get_frame_size(lmao)
-    # print(size)
-
     file = "sample-3s.mp3"
 
     from mutagen.mp3 import MP3
