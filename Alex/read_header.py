@@ -15,6 +15,7 @@ def read_header(bitstream, ptr):
     OUTPUT:
         output -> dictionary mapping terms to their values
     '''
+    orig_ptr_loc = ptr
     #collect data from header:
     sync    =   int(bitstream[ptr: ptr + 12], 2); ptr += 12;
     version =   int(bitstream[ptr: ptr + 1 ], 2); ptr += 1 ;
@@ -46,7 +47,8 @@ def read_header(bitstream, ptr):
         "orig": orig,
         "emph": emph,
         "samples": mpeg_frame_samples[2 + version][layer],
-        "slot": mpeg_slot_size[layer]
+        "slot": mpeg_slot_size[layer],
+        "loc": orig_ptr_loc
     }
 
     return output
@@ -57,7 +59,7 @@ def parse_frames(bitstream):
     this seems to work perfectly now
     note that the frame size is all encompassing (the header, CRC, padding etc), just add the number to the current pointer
     also works now that we ensure another sync word shows up after the current frame
-    gets exact timing 
+    gets exact timing
     '''
     frames = []
     start = 0

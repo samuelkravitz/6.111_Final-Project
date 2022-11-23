@@ -61,6 +61,13 @@ def read_side_information(bitstream, ptr, nchannels):
                     table_select[gr,ch,region]      = int(bitstream[ptr: ptr + 5], 2); ptr += 5;
                 for window in range(3):
                     subblock_gain[gr,ch,window]     = int(bitstream[ptr: ptr + 3], 2); ptr += 3;
+
+                #### DEFAULT VALUES FOR REGION COUNT: (pg 32 of ISO manual)
+                if (block_type[gr,ch] == 1) or (block_type[gr,ch] == 2) or ((block_type[gr,ch]==2) and (mixed_block_flag[gr,ch]==1)):
+                    region0_count[gr,ch] = 7
+                else:
+                    region0_count[gr,ch] = 8
+                region1_count[gr,ch] = 26       #### some crazy logic from the mailarchive thing i found, 36 in the ISO is a block_typo!
             else:
                 for region in range(3):
                     table_select[gr,ch,region]      = int(bitstream[ptr: ptr + 5], 2); ptr += 5;
