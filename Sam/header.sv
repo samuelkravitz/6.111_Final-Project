@@ -77,12 +77,12 @@ logic [8:0] big_values [1:0][1:0];
 logic [7:0] global_gain [1:0][1:0];
 logic mixed_block_flag [1:0][1:0];
 logic [2:0] subblock_gain [1:0][1:0];
-logic window_swtiching_flag [1:0][1:0];
+logic window_switching_flag [1:0][1:0];
 logic [1:0] block_type [1:0][1:0];
 logic [3:0] scalefac_compress [1:0][1:0];
 logic [4:0] table_select [1:0][1:0][2:0];
-logic [3:0] region0_count [1:0][1:0];
-logic [2:0] region1_count [1:0][1:0];
+logic [7:0] region0_count [1:0][1:0];
+logic [7:0] region1_count [1:0][1:0];
 logic preflag [1:0][1:0];
 logic scalefac_scale [1:0][1:0];
 logic count1table_select [1:0][1:0];
@@ -103,24 +103,33 @@ case (channel)
         big_values[0][0] = side_info[225:217];
         global_gain[0][0] = side_info[216:209];
         scalefac_compress[0][0] = side_info[208:205];
-        window_swtiching_flag[0][0] = side_info[204];
+        window_switching_flag[0][0] = side_info[204];
 
-        if(window_swtiching_flag[0][0]) begin
+        if(window_switching_flag[0][0]) begin
             block_type[0][0] = side_info[203:202];
             mixed_block_flag[0][0] = side_info[201];
 
             table_select[0][0][0] = side_info[200:196];
             table_select[0][0][1] = side_info[195:191];
+
             subblock_gain[0][0][0] = side_info[190:188];
             subblock_gain[0][0][1] = side_info[187:185];
             subblock_gain[0][0][2] = side_info[184:182];
+
+            if ((block_type[0][0] == 1 || block_type[0][0] == 2)) || ((block_type[0][0]==2) && (mixed_block_flag[0][0]==1)) begin
+                region0_count[0][0] = 8'd7;
+            end else begin
+                region0_count[0][0] = 8'd8;
+            end
+            region1_count[0][0] = 8'd26;
         end else begin
             table_select[0][0][0] = side_info[203:199];
             table_select[0][0][1] = side_info[198:194];
             table_select[0][0][2] = side_info[193:189];
+
+            region0_count[0][0] = side_info[188:185];
+            region1_count[0][0] = side_info[184:182];
         end
-        region0_count[0][0] = side_info[188:185];
-        region1_count[0][0] = side_info[184:182];
         preflag[0][0] = side_info[181];
         scalefac_scale[0][0] = side_info[180];
         count1table_select[0][0] = side_info[179];
@@ -131,24 +140,34 @@ case (channel)
         big_values[1][0] = side_info[225-59:217-59];
         global_gain[1][0] = side_info[216-59:209-59];
         scalefac_compress[1][0] = side_info[208-59:205-59];
-        window_swtiching_flag[1][0] = side_info[204-59];
+        window_switching_flag[1][0] = side_info[204-59];
 
-        if(window_swtiching_flag[1][0]) begin
+        if(window_switching_flag[1][0]) begin
             block_type[1][0] = side_info[203-59:202-59];
             mixed_block_flag[1][0] = side_info[201-59];
-
+ 
             table_select[1][0][0] = side_info[200-59:196-59];
             table_select[1][0][1] = side_info[195-59:191-59];
+ 
             subblock_gain[1][0][0] = side_info[190-59:188-59];
             subblock_gain[1][0][1] = side_info[187-59:185-59];
             subblock_gain[1][0][2] = side_info[184-59:182-59];
+ 
+            if ((block_type[1][0] == 1 || block_type[1][0] == 2)) || ((block_type[1][0]==2) && (mixed_block_flag[1][0]==1)) begin
+                region0_count[1][0] = 8'd7;
+            end else begin
+                region0_count[1][0] = 8'd8;
+            end
+            region1_count[1][0] = 8'd26;
         end else begin
             table_select[1][0][0] = side_info[203-59:199-59];
             table_select[1][0][1] = side_info[198-59:194-59];
             table_select[1][0][2] = side_info[193-59:189-59];
+ 
+            region0_count[1][0] = side_info[188-59:185-59];
+            region1_count[1][0] = side_info[184-59:182-59];
         end
-        region0_count[1][0] = side_info[188-59:185-59];
-        region1_count[1][0] = side_info[184-59:182-59];
+
         preflag[1][0] = side_info[181-59];
         scalefac_scale[1][0] = side_info[180-59];
         count1table_select[1][0] = side_info[179-59];
@@ -171,24 +190,34 @@ case (channel)
         big_values[0][0] = side_info[225-2:217-2];
         global_gain[0][0] = side_info[216-2:209-2];
         scalefac_compress[0][0] = side_info[208-2:205-2];
-        window_swtiching_flag[0][0] = side_info[204-2];
+        window_switching_flag[0][0] = side_info[204-2];
  
-        if(window_swtiching_flag[0][0]) begin
+        if(window_switching_flag[0][0]) begin
             block_type[0][0] = side_info[203-2:202-2];
             mixed_block_flag[0][0] = side_info[201-2];
  
             table_select[0][0][0] = side_info[200-2:196-2];
             table_select[0][0][1] = side_info[195-2:191-2];
+
             subblock_gain[0][0][0] = side_info[190-2:188-2];
             subblock_gain[0][0][1] = side_info[187-2:185-2];
             subblock_gain[0][0][2] = side_info[184-2:182-2];
+
+            if ((block_type[0][0] == 1 || block_type[0][0] == 2)) || ((block_type[0][0]==2) && (mixed_block_flag[0][0]==1)) begin
+                region0_count[0][0] = 8'd7;
+            end else begin
+                region0_count[0][0] = 8'd8;
+            end
+            region1_count[0][0] = 8'd26;
+
         end else begin
             table_select[0][0][0] = side_info[203-2:199-2];
             table_select[0][0][1] = side_info[198-2:194-2];
             table_select[0][0][2] = side_info[193-2:189-2];
+
+            region0_count[0][0] = side_info[188-2:185-2];
+            region1_count[0][0] = side_info[184-2:182-2];
         end
-        region0_count[0][0] = side_info[188-2:185-2];
-        region1_count[0][0] = side_info[184-2:182-2];
         preflag[0][0] = side_info[181-2];
         scalefac_scale[0][0] = side_info[180-2];
         count1table_select[0][0] = side_info[179-2];
@@ -199,9 +228,9 @@ case (channel)
         big_values[0][1] = side_info[225-59-2:217-59-2];
         global_gain[0][1] = side_info[216-59-2:209-59-2];
         scalefac_compress[0][1] = side_info[208-59-2:205-59-2];
-        window_swtiching_flag[0][1] = side_info[204-59-2];
+        window_switching_flag[0][1] = side_info[204-59-2];
  
-        if(window_swtiching_flag[0][1]) begin
+        if(window_switching_flag[0][1]) begin
             block_type[0][1] = side_info[203-59-2:202-59-2];
             mixed_block_flag[0][1] = side_info[201-59-2];
  
@@ -210,13 +239,20 @@ case (channel)
             subblock_gain[0][1][0] = side_info[190-59-2:188-59-2];
             subblock_gain[0][1][1] = side_info[187-59-2:185-59-2];
             subblock_gain[0][1][2] = side_info[184-59-2:182-59-2];
+
+            if ((block_type[0][1] == 1 || block_type[0][1] == 2)) || ((block_type[0][1]==2) && (mixed_block_flag[0][1]==1)) begin
+                region0_count[0][1] = 8'd7;
+            end else begin
+                region0_count[0][1] = 8'd8;
+            end
+            region1_count[0][1] = 8'd26;
         end else begin
             table_select[0][1][0] = side_info[203-59-2:199-59-2];
             table_select[0][1][1] = 1ide_info[198-59-2:194-59-2];
             table_select[0][1][2] = side_info[193-59-2:189-59-2];
+            region0_count[0][1] = side_info[188-59-2:185-59-2];
+            region1_count[0][1] = side_info[184-59-2:182-59-2];
         end
-        region0_count[0][1] = side_info[188-59-2:185-59-2];
-        region1_count[0][1] = side_info[184-59-2:182-59-2];
         preflag[0][1] = side_info[181-59-2];
         scalefac_scale[0][1] = side_info[180-59-2];
         count1table_select[0][1] = side_info[179-59-2];
@@ -227,9 +263,9 @@ case (channel)
         big_values[1][0] = side_info[225-(2*59)-2:217-(2*59)-2];
         global_gain[1][0] = side_info[216-(2*59)-2:209-(2*59)-2];
         scalefac_compress[1][0] = side_info[208-(2*59)-2:205-(2*59)-2];
-        window_swtiching_flag[1][0] = side_info[204-(2*59)-2];
+        window_switching_flag[1][0] = side_info[204-(2*59)-2];
  
-        if(window_swtiching_flag[1][0]) begin
+        if(window_switching_flag[1][0]) begin
             block_type[1][0] = side_info[203-(2*59)-2:202-(2*59)-2];
             mixed_block_flag[1][0] = side_info[201-(2*59)-2];
  
@@ -238,13 +274,21 @@ case (channel)
             subblock_gain[1][0][0] = side_info[190-(2*59)-2:188-(2*59)-2];
             subblock_gain[1][0][1] = side_info[187-(2*59)-2:185-(2*59)-2];
             subblock_gain[1][0][2] = side_info[184-(2*59)-2:182-(2*59)-2];
+
+            if ((block_type[1][0] == 1 || block_type[1][0] == 2)) || ((block_type[1][0]==2) && (mixed_block_flag[1][0]==1)) begin
+                region0_count[1][0] = 8'd7;
+            end else begin
+                region0_count[1][0] = 8'd8;
+            end
+            region1_count[1][0] = 8'd26;
         end else begin
             table_select[1][0][0] = side_info[203-(2*59)-2:199-(2*59)-2];
             table_select[1][0][1] = 1ide_info[198-(2*59)-2:194-(2*59)-2];
             table_select[1][0][2] = side_info[193-(2*59)-2:189-(2*59)-2];
+
+            region0_count[1][0] = side_info[188-(2*59)-2:185-(2*59)-2];
+            region1_count[1][0] = side_info[184-(2*59)-2:182-(2*59)-2];
         end
-        region0_count[1][0] = side_info[188-(2*59)-2:185-(2*59)-2];
-        region1_count[1][0] = side_info[184-(2*59)-2:182-(2*59)-2];
         preflag[1][0] = side_info[181-(2*59)-2];
         scalefac_scale[1][0] = side_info[180-(2*59)-2];
         count1table_select[1][0] = side_info[179-(2*59)-2];
@@ -254,9 +298,9 @@ case (channel)
         big_values[1][1] = side_info[225-(3*59)-2:217-(3*59)-2];
         global_gain[1][1] = side_info[216-(3*59)-2:209-(3*59)-2];
         scalefac_compress[1][1] = side_info[208-(3*59)-2:205-(3*59)-2];
-        window_swtiching_flag[1][1] = side_info[204-(3*59)-2];
+        window_switching_flag[1][1] = side_info[204-(3*59)-2];
  
-        if(window_swtiching_flag[1][1]) begin
+        if(window_switching_flag[1][1]) begin
             block_type[1][1] = side_info[203-(3*59)-2:202-(3*59)-2];
             mixed_block_flag[1][1] = side_info[201-(3*59)-2];
  
@@ -265,13 +309,21 @@ case (channel)
             subblock_gain[1][1][0] = side_info[190-(3*59)-2:188-(3*59)-2];
             subblock_gain[1][1][1] = side_info[187-(3*59)-2:185-(3*59)-2];
             subblock_gain[1][1][2] = side_info[184-(3*59)-2:182-(3*59)-2];
+
+             if ((block_type[1][1] == 1 || block_type[1][1] == 2)) || ((block_type[1][1]==2) && (mixed_block_flag[1][1]==1)) begin
+                region0_count[1][1] = 8'd7;
+            end else begin
+                region0_count[1][1] = 8'd8;
+            end
+            region1_count[1][1] = 8'd26;
         end else begin
             table_select[1][1][0] = side_info[203-(3*59)-2:199-(3*59)-2];
             table_select[1][1][1] = 1ide_info[198-(3*59)-2:194-(3*59)-2];
             table_select[1][1][2] = side_info[193-(3*59)-2:189-(3*59)-2];
+
+            region0_count[1][1] = side_in-59fo[188-(3*59)-2:185-(3*59)-2];
+            region1_count[1][1] = side_info[184-(3*59)-2:182-(3*59)-2];
         end
-        region0_count[1][1] = side_info[188-(3*59)-2:185-(3*59)-2];
-        region1_count[1][1] = side_info[184-(3*59)-2:182-(3*59)-2];
         preflag[1][1] = side_info[181-(3*59)-2];
         scalefac_scale[1][1] = side_info[180-(3*59)-2];
         count1table_select[1][1] = side_info[179-(3*59)-2];
