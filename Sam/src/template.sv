@@ -98,7 +98,7 @@ case (channel)
         scfsi[0][3] = side_info[238];
 
         //GRANULE 0
-
+        
         part2_3_length[0][0] = side_info[237:226];
         big_values[0][0] = side_info[225:217];
         global_gain[0][0] = side_info[216:209];
