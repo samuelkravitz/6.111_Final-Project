@@ -16,11 +16,11 @@ def read_side_information(bitstream, ptr, nchannels):
                     if the audio is dual channel, it reads through 32 bytes (256 bits)
         ptr -> location of the main_data information (first bit after all the side information)
     '''
-    main_data_begin         = bitstream[ptr:ptr + 9]; ptr += 9;
+    main_data_begin         = int(bitstream[ptr:ptr + 9], 2); ptr += 9;
     if (nchannels == 1):
-        private_bits        = bitstream[ptr:ptr + 5]; ptr += 5;
+        private_bits        = int(bitstream[ptr:ptr + 5], 2); ptr += 5;
     else:
-        private_bits        = bitstream[ptr:ptr + 3]; ptr += 3;
+        private_bits        = int(bitstream[ptr:ptr + 3], 2); ptr += 3;
 
 
     #create a bunch of 2d arrays (granules, nchannels) that store unsigned integers
@@ -39,6 +39,8 @@ def read_side_information(bitstream, ptr, nchannels):
     preflag                 = np.zeros(shape=(2,nchannels), dtype=np.uint16)         #2D array, [granule, channel] to index, each item is 1 bit
     scalefac_scale          = np.zeros(shape=(2,nchannels), dtype=np.uint16)         #2D array, [granule, channel] to index, each item is 1 bit
     count1table_select      = np.zeros(shape=(2,nchannels), dtype=np.uint16)         #2D array, [granule, channel] to index, each item is 1 bit
+    # switch_point_l          = np.zeros(shape=(2,nchannels), dtype=np.uint16)
+    # switch_point_s          = np.zeros(shape=(2,nchannels), dtype=np.uint16)
 
     for ch in range(nchannels):
         for scfsi_band in range(4):
@@ -57,27 +59,36 @@ def read_side_information(bitstream, ptr, nchannels):
                 block_type[gr,ch]           = int(bitstream[ptr: ptr + 2], 2); ptr += 2;
                 mixed_block_flag[gr,ch]     = int(bitstream[ptr: ptr + 1], 2); ptr += 1;
 
+                # ### found in the mp3-decoder c library...
+                # if (mixed_block_flag[gr,ch] == 1):
+                #     switch_point_l[gr,ch] = 8
+                #     switch_point_s[gr,ch] = 3
+                # else:
+                #     switch_point_l[gr,ch] = 0
+                #     switch_point_s[gr,ch] = 0
+
                 for region in range(2):
                     table_select[gr,ch,region]      = int(bitstream[ptr: ptr + 5], 2); ptr += 5;
                 for window in range(3):
                     subblock_gain[gr,ch,window]     = int(bitstream[ptr: ptr + 3], 2); ptr += 3;
 
                 #### DEFAULT VALUES FOR REGION COUNT: (pg 32 of ISO manual)
-                if (block_type[gr,ch] == 1) or (block_type[gr,ch] == 2) or ((block_type[gr,ch]==2) and (mixed_block_flag[gr,ch]==1)):
-                    region0_count[gr,ch] = 7
+                if (block_type[gr,ch] == 2) and (mixed_block_flag[gr,ch] == 0):
+                    region0_count[gr,ch]            = 8
                 else:
-                    region0_count[gr,ch] = 8
-                region1_count[gr,ch] = 26       #### some crazy logic from the mailarchive thing i found, 36 in the ISO is a block_typo!
+                    region0_count[gr,ch]            = 7
+                region1_count[gr,ch]                = 20 - region0_count[gr,ch]       #### i have since changed this to what i found in the PDMP3 C library... they made an explicit note, i will take it
             else:
                 for region in range(3):
                     table_select[gr,ch,region]      = int(bitstream[ptr: ptr + 5], 2); ptr += 5;
 
                 region0_count[gr,ch]                = int(bitstream[ptr: ptr + 4], 2); ptr += 4;
                 region1_count[gr,ch]                = int(bitstream[ptr: ptr + 3], 2); ptr += 3;
+                block_type[gr,ch]                   = 0     #implicit, i added this after seeing it in the PDMP3 C library (line 1191)
 
             preflag[gr,ch]                          = int(bitstream[ptr: ptr + 1], 2); ptr += 1;
             scalefac_scale[gr,ch]                   = int(bitstream[ptr: ptr + 1], 2); ptr += 1;
-            count1table_select[gr]                  = int(bitstream[ptr: ptr + 1], 2); ptr += 1;
+            count1table_select[gr,ch]               = int(bitstream[ptr: ptr + 1], 2); ptr += 1;
 
     output = {
         "main_data_begin": main_data_begin,
@@ -96,7 +107,9 @@ def read_side_information(bitstream, ptr, nchannels):
         "region0_count": region0_count,
         "region1_count": region1_count,
         "preflag": preflag,
-        "count1table_select": count1table_select
+        "count1table_select": count1table_select,
+        # "switch_point_l": switch_point_l,
+        # "switch_point_s": switch_point_s
     }
 
     return output, ptr
