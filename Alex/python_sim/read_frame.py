@@ -157,7 +157,7 @@ def read_main(main_data_bitstream, header, side_info):
                         scalefac_l[1,ch,sfb]                       = scalefac_l[0,ch,sfb]       #copy the scalefactors over
 
             IS[gr,ch,:] = huffmancodebits(bitstream[ptr:ptr_start + data_length], 0, gr, ch, header, side_info)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to 0
-
+            print(print_array_without_commas(IS[gr,ch]))
             if ptr > ptr_start + data_length:
                 raise ValueError("somehow exceeded the number of bits alloted to this shit...")
             else:
@@ -210,6 +210,7 @@ def huffmancodebits(bitstream, ptr, gr, ch, header, side_info):
         OUT[is_pos + 1] = y
 
     #read count1 region values...
+    table_num = side_info["count1table_select"][gr,ch]          ##for some reason this line was missing, but i can't find the difference it makes in my test cases.
     for is_pos in range(side_info["big_values"][gr,ch] * 2, 576, 4):
         try:
             v,w,x,y,ptr     = huffman_decode_count1_values(bitstream, ptr, table_num)
@@ -275,6 +276,7 @@ def huffman_decode_count1_values(bitstream, ptr, table_num):
     note that we also halfway expect this to throw an error, because most of the time the entire
     spectrum is not coded for.
     '''
+    assert table_num in (0,1)
     huffman_table = table_B if table_num == 1 else table_A
     max_word_length = max(huffman_table.keys())
 

@@ -8,7 +8,7 @@ from side_info import read_side_information
 
 import numpy as np
 
-file = "file_example_MP3_1MG.mp3"
+file = "sample-3s.mp3"
 binary_data = []
 with open(file, 'rb') as f:
     for c in f.read():
@@ -26,10 +26,10 @@ disp_frames(frames[0:1])
 
 buffer = FIFO()
 
-for i, header in enumerate(frames):
+for i, header in enumerate(frames[0:5]):
     print("reading information for frame:", i+1)
     nchannels = 1 if header["mode"] == 3 else 2
     side_info_start = header["loc"] + 32 + (16 if header["prot"] == 0 else 0)
     side_info, end_ptr = read_side_information(binary_string, side_info_start, nchannels)
     main_data_bits = get_main_data_bits(binary_string, header, side_info, buffer)
-    read_main(main_data_bits, header, side_info)
+    output, ptr = read_main(main_data_bits, header, side_info)
