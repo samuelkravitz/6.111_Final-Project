@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ns / 1ps
 
-module side_info_2ch(
+module side_info_2ch_WRONG(
     input wire clk,
     input wire rst,
     input wire [7:0] axiid,

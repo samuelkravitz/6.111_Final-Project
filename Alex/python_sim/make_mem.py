@@ -1,5 +1,5 @@
 '''
-pretend code to put all the modules together
+produce a mem file of the 3s song:
 '''
 
 from read_header import read_header, parse_frames, disp_frames
@@ -25,12 +25,18 @@ print("first frame metadata:")
 disp_frames(frames[0:1])
 print("number of frames:", len(frames))
 
-buffer = FIFO()
+file = open("mp3_song.mem", "w")
 
-for i, header in enumerate(frames[0:5]):
+for i, header in enumerate(frames):
     print("reading information for frame:", i+1)
-    nchannels = 1 if header["mode"] == 3 else 2
-    side_info_start = header["loc"] + 32 + (16 if header["prot"] == 0 else 0)
-    side_info, end_ptr = read_side_information(binary_string, side_info_start, nchannels)
-    main_data_bits = get_main_data_bits(binary_string, header, side_info, buffer)
-    output, ptr = read_main(main_data_bits, header, side_info)
+    frame_bits = binary_string[header["loc"]:header["loc"] + (8 * header["size"])]
+    num_bytes = len(frame_bits) // 8
+    print("frame", i, "has", num_bytes, "bytes")
+    for j in range(512):
+        #write a byte:
+        if j < num_bytes:
+            tmp = hex(int(frame_bits[j * 8: (j+1) * 8],2)).zfill(2)[2:]
+        else:
+            tmp = "00"
+        file.write("{}\n".format(tmp))
+file.close()

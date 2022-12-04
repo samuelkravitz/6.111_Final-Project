@@ -14,48 +14,39 @@ STATUS: WORKING
   If that system breaks, we have the reset button to save the system.
 */
 
-module header(
+module header_finder(
     input wire clk,
     input wire rst,
     input wire [7:0] axiid,
     input wire axiiv,
 
-    output logic axiov,
-    output logic sync,
+    output logic valid_header,
     output logic prot,
-    output logic [8:0] bitrate,
-    output logic [15:0] samp_rate,
-    output logic padding,
-    output logic private,
     output logic [1:0] mode,
     output logic [1:0] mode_ext,
     output logic [1:0] emphasis,
-    output logic [8:0] frame_sample,
-    output logic [2:0] slot_size,
     output logic [10:0] frame_size
 );
+
+    logic [11:0] sync;
+    logic version;
+    logic [1:0] layer;
+    logic [15:0] samp_rate;
     logic [31:0] header;
-    logic [1:0] header_byte_counter;    //counts to 3 and then recycles...
+    logic padding;
+    logic [8:0] bitrate;
+
+    always_comb begin
+      if ((sync == 12'd4095) && (version) && (samp_rate == 2'b00) && (bitrate > 0)) valid_header = 1;
+      else valid_header = 0;
+    end
 
     always_ff @(posedge clk) begin
         if (rst) begin
           header <= 0;
-          header_byte_counter <= 0;
-          axiov <= 0;
         end else begin
             if (axiiv) begin
               header <= {header[23:0], axiid};
-
-                if (header_byte_counter == 2'b11) begin
-                  axiov <= 1;   //this means the 4 bytes for the header have been read in now!
-                  header_byte_counter <= 0;     //reset the byte counter to 0 again...
-                end else begin
-                  header_byte_counter <= header_byte_counter + 1;   //increment the header byte counter
-                  axiov <= 0;
-                end
-
-            end else begin
-              axiov <= 0;
             end
         end
     end
@@ -78,31 +69,17 @@ module header(
             4'b1110 : bitrate = 9'd320;
             default : bitrate = 9'd0;
         endcase
-        case(header[11:10])
-            2'b00 : samp_rate = 16'd44100;
-            2'b01 : samp_rate = 16'd48000;
-            2'b10 : samp_rate = 16'd32000;
-        default samp_rate = 16'd0;
-    endcase
     end
 
+    assign version = header[19];
+    assign layer = header[18:17];
+    assign samp_rate = header[11:10];
     assign sync = header[31:20];
-
     assign prot = header[16];
-
     assign padding = header[9];
-
-    assign private = header[8];
-
     assign mode = header[7:6];
-
     assign mode_ext = header[5:4];
-
     assign emphasis = header[1:0];
-
-    assign frame_sample = 9'd384;
-
-    assign slot_size = 3'd4;
 
     //compute the frame size according to a look up table (so we dont have to divide by 44100):
     //note that this HAS to be done within a clock cycle because the frame parsing takes this information into account

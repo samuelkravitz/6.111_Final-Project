@@ -157,7 +157,7 @@ def read_main(main_data_bitstream, header, side_info):
                         scalefac_l[1,ch,sfb]                       = scalefac_l[0,ch,sfb]       #copy the scalefactors over
 
             IS[gr,ch,:] = huffmancodebits(bitstream[ptr:ptr_start + data_length], 0, gr, ch, header, side_info)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to 0
-            print(print_array_without_commas(IS[gr,ch]))
+            
             if ptr > ptr_start + data_length:
                 raise ValueError("somehow exceeded the number of bits alloted to this shit...")
             else:

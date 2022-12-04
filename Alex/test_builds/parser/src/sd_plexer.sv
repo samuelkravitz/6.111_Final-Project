@@ -36,14 +36,14 @@ module sd_plexer(
   logic [8:0] byte_counter;      //this counts from 0 to 511 (512 bytes), so it only needs 9 bits...
   logic [4:0] output_codeword;
 
-  assign {header_ov, crc_16_ov, side_info_1_ov, side_info_2_ov, fifo_buffer_ov} = output_codeword;
-  assign main_data_length = frame_size - (header_length + crc_length + side_info_length);
-  assign d_out = sd_din;
-
   logic [3:0] header_length;
   logic [1:0] crc_length;
   logic [5:0] side_info_length;
   logic [10:0] main_data_length;
+
+  assign {header_ov, crc_16_ov, side_info_1_ov, side_info_2_ov, fifo_buffer_ov} = output_codeword;
+  assign main_data_length = frame_size - (header_length + crc_length + side_info_length);
+  assign d_out = sd_din;
 
   always_ff @(posedge clk) begin
     if (rst) begin
