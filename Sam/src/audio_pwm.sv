@@ -4,7 +4,7 @@
 module audio_PWM(
     input clk, 			// 100MHz clock.
     input reset,		// Reset assertion.
-    input [7:0] music_data,	// 8-bit music sample
+    input [?:0] music_data,	// 8-bit music sample
     output reg PWM_out		// PWM output. Connect this to ampPWM.
     );
     
