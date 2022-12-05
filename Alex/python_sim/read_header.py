@@ -31,6 +31,15 @@ def read_header(bitstream, ptr):
     orig    =   int(bitstream[ptr: ptr + 1 ], 2); ptr += 1 ;
     emph    =   int(bitstream[ptr: ptr + 2 ], 2); ptr += 2 ;
 
+    bps         = mpeg_frame_samples[2 + version][layer] / 8.0
+    bitrate     = mpeg_bitrates[2 + version][layer][brx]
+    f_s         = mpeg_srates[2 + version][srx]
+    slot_size   = mpeg_slot_size[layer]
+
+    if f_s != 0:
+        fsize   = int( ( (bps * bitrate * 1000) / f_s ) + (pad * slot_size) ) #the size of the frame in bytes! (not bits!!!)
+    else:
+        fsize = 0       #this just means the ptr input goes to an invalid header (the supposed sampling rate is 0)
 
     output = {
         "sync": sync,
@@ -48,7 +57,8 @@ def read_header(bitstream, ptr):
         "emph": emph,
         "samples": mpeg_frame_samples[2 + version][layer],
         "slot": mpeg_slot_size[layer],
-        "loc": orig_ptr_loc
+        "loc": orig_ptr_loc,
+        "size": fsize
     }
 
     return output
@@ -67,16 +77,7 @@ def parse_frames(bitstream):
         header_info = read_header(bitstream, start)
 
         if (header_info["sync"] == 4095) and (header_info["version"] == 1) and (header_info["layer"] == 3) and (header_info["f_s"] == 44100) and (header_info["bitrate"] != 0):
-            bps = header_info["samples"] / 8.0
-            bitrate = header_info["bitrate"]
-            f_s = header_info["f_s"]
-            slot_size = header_info["slot"]
-            pad = header_info["pad"]
-            prot = (header_info["prot"] != 1)
-
-            fsize = int( ( (bps * bitrate * 1000) / f_s ) + (pad * slot_size) )
-            header_info["size"] = fsize
-            next = start + (fsize * 8)
+            next = start + (header_info["size"] * 8)
 
             if next < (len(bitstream) - 32):
                 next_header = read_header(bitstream, next)
@@ -98,7 +99,6 @@ def disp_frames(frames):
     print("number of valid frames:", len(frames), "with estimated music time:", len(frames) * 26/1000,"s")
     for frame in frames:
         print("MPEG-", frame["version"], ", layer", frame["layer"], "bitrate:", frame["bitrate"], "size:", frame["size"])
-        break
     return
 
 #use [version]

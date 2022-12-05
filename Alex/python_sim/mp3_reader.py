@@ -72,7 +72,7 @@ def mpg_get_frame_size(header):
         return 0, None, None, None, None, None, None        #this means something is wrong about the header or we cant interpret it!
 
     #collect data from header:
-    sync = int(header[0:11],2)
+    sync    =   int(header[0:11],2)
     version =   int(header[11:13],2)
     layer   =   int(header[13:15],2)
     pad     =   int(header[22],2)
