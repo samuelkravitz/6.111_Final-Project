@@ -27,10 +27,11 @@ print("number of frames:", len(frames))
 
 buffer = FIFO()
 
-for i, header in enumerate(frames[0:5]):
+for i, header in enumerate(frames[0:3]):
     print("reading information for frame:", i+1)
     nchannels = 1 if header["mode"] == 3 else 2
     side_info_start = header["loc"] + 32 + (16 if header["prot"] == 0 else 0)
     side_info, end_ptr = read_side_information(binary_string, side_info_start, nchannels)
     main_data_bits = get_main_data_bits(binary_string, header, side_info, buffer)
-    output, ptr = read_main(main_data_bits, header, side_info)
+    output, ptr = read_main(main_data_bits, header, side_info, verbose=True)
+    # print(output["IS"][0][0])

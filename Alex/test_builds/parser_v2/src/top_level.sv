@@ -13,17 +13,6 @@ module top_level(
   logic sys_rst;
   assign sys_rst = btnc;
 
-  // logic clk_25mhz, clk_8mhz;
-  // logic clk_gen_locked;
-  //
-  // clk_wiz_0_clk_wiz clk_gen(
-  //   .clk_25mhz(clk_25mhz),
-  //   .clk_8mhz(clk_8mhz),
-  //   .reset(sys_rst),
-  //   .locked(clk_gen_locked),
-  //   .clk_100mhz(clk_100mhz)
-  // );
-
   logic [7:0] bram_axiod;
   logic bram_axiov;
 

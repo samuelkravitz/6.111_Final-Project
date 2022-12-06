@@ -73,6 +73,7 @@ def get_main_data_bits(bitstream, header, side_info, fifo_buffer):
     #first, remove all bits that come before the offset from the fifo buffer...
     num_main_data_bits = np.sum(side_info["part2_3_length"])
     num_discard_bits = fifo_buffer.buffer_size - (side_info["main_data_begin"] * 8)     #safe to discard any bits in buffer before the offset
+    print("discarding", num_discard_bits, "bits!")
 
     discard_bits = fifo_buffer.get(num_discard_bits)
 
@@ -86,7 +87,7 @@ def get_main_data_bits(bitstream, header, side_info, fifo_buffer):
     return OUT
 
 
-def read_main(main_data_bitstream, header, side_info):
+def read_main(main_data_bitstream, header, side_info, verbose = False):
     '''
     slightly modified from the last version (in read_main.py)
     '''
@@ -156,8 +157,13 @@ def read_main(main_data_bitstream, header, side_info):
                     for sfb in range(16,21):
                         scalefac_l[1,ch,sfb]                       = scalefac_l[0,ch,sfb]       #copy the scalefactors over
 
-            IS[gr,ch,:] = huffmancodebits(bitstream[ptr:ptr_start + data_length], 0, gr, ch, header, side_info)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to 0
-            
+            IS[gr,ch,:] = huffmancodebits(bitstream[ptr:data_length], 0, gr, ch, header, side_info, verbose)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to 0
+            if verbose:
+                print("huffman bitstream for gr: {}, ch: {} has length {}".format(gr,ch, data_length-ptr))
+                print(bitstream[ptr:data_length])
+                print("used", ptr ,"bits to get through scalefactors for this gr and channel")
+                print("IS:")
+                print(IS[gr,ch])
             if ptr > ptr_start + data_length:
                 raise ValueError("somehow exceeded the number of bits alloted to this shit...")
             else:
@@ -170,7 +176,7 @@ def read_main(main_data_bitstream, header, side_info):
     }
     return output, ptr
 
-def huffmancodebits(bitstream, ptr, gr, ch, header, side_info):
+def huffmancodebits(bitstream, ptr, gr, ch, header, side_info, verbose=False):
     '''
     another revised version of the function from read_main.py
     taken from the PDMP3 library (in C)
@@ -188,6 +194,8 @@ def huffmancodebits(bitstream, ptr, gr, ch, header, side_info):
         region_1_start = g_sf_band_indices_l[side_info["region0_count"][gr,ch] + 1                                  ]
         region_2_start = g_sf_band_indices_l[side_info["region0_count"][gr,ch] + 1 + side_info["region1_count"][gr,ch] + 1   ]
 
+    if (verbose):
+        print(region_1_start, region_2_start, "these are the region starts")
     #read big values according to the region_x_start:
     for is_pos in range(0, side_info["big_values"][gr,ch] * 2, 2):
         if (is_pos < region_1_start):
@@ -208,7 +216,10 @@ def huffmancodebits(bitstream, ptr, gr, ch, header, side_info):
 
         OUT[is_pos] = x
         OUT[is_pos + 1] = y
-
+    #     if (verbose):
+    #         print(is_pos, x, y)
+    # if verbose:
+    #     print("ptr position after big vals:", ptr)
     #read count1 region values...
     table_num = side_info["count1table_select"][gr,ch]          ##for some reason this line was missing, but i can't find the difference it makes in my test cases.
     for is_pos in range(side_info["big_values"][gr,ch] * 2, 576, 4):
