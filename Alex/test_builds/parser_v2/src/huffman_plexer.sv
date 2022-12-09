@@ -116,7 +116,7 @@ module huffman_plexer (
         end
         else if (bram_data_valid) begin
           //this means the correct huffman table just outputted a value
-          bram_addra <= bram_addra + 2; //just let this counter go as high as it wants, it resets with every frame
+          bram_addra <= (table_num < 6'd32) ? bram_addra + 2 : bram_addra + 4; //just let this counter go as high as it wants, it resets with every frame
           //but when it is greater than 575, the bram_{gr,ch}_data_valid will never be high (see combinational logic above)
         end
       end
