@@ -1,0 +1,362 @@
+$date
+	Thu Dec 08 19:53:14 2022
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module reorder_tb $end
+$var wire 10 ! is_pos_out [9:0] $end
+$var wire 2 " grch_out [1:0] $end
+$var wire 1 # dout_v $end
+$var reg 9 $ big_values [8:0] $end
+$var reg 2 % block_type [1:0] $end
+$var reg 1 & clk $end
+$var reg 1 ' din_v $end
+$var reg 2 ( grch_in [1:0] $end
+$var reg 10 ) is_pos [9:0] $end
+$var reg 1 * mixed_block_flag $end
+$var reg 1 + rst $end
+$var reg 1 , window_switching_flag $end
+$scope module UUT $end
+$var wire 9 - big_values [8:0] $end
+$var wire 2 . block_type [1:0] $end
+$var wire 1 & clk $end
+$var wire 1 ' din_v $end
+$var wire 2 / grch_in [1:0] $end
+$var wire 10 0 is_pos [9:0] $end
+$var wire 1 * mixed_block_flag $end
+$var wire 1 + rst $end
+$var wire 1 , window_switching_flag $end
+$var wire 10 1 count1 [9:0] $end
+$var wire 12 2 case_3_out [11:0] $end
+$var wire 12 3 case_2_out [11:0] $end
+$var wire 12 4 case_1_out [11:0] $end
+$var reg 18 5 big_values_pipe [17:0] $end
+$var reg 4 6 block_type_pipe [3:0] $end
+$var reg 2 7 din_v_pipe [1:0] $end
+$var reg 1 # dout_v $end
+$var reg 2 8 grch_out [1:0] $end
+$var reg 4 9 grch_pipe [3:0] $end
+$var reg 10 : is_pos_out [9:0] $end
+$var reg 20 ; is_pos_pipe [19:0] $end
+$var reg 2 < mixed_block_flag_pipe [1:0] $end
+$var reg 2 = window_switching_flag_pipe [1:0] $end
+$scope module TB_CASE_1 $end
+$var wire 10 > addra [9:0] $end
+$var wire 1 & clka $end
+$var wire 12 ? dina [11:0] $end
+$var wire 1 @ ena $end
+$var wire 1 A regcea $end
+$var wire 1 + rsta $end
+$var wire 1 B wea $end
+$var wire 12 C douta [11:0] $end
+$var parameter 168 D INIT_FILE $end
+$var parameter 32 E RAM_DEPTH $end
+$var parameter 128 F RAM_PERFORMANCE $end
+$var parameter 32 G RAM_WIDTH $end
+$var reg 12 H ram_data [11:0] $end
+$scope function clogb2 $end
+$var integer 32 I depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 12 J douta_reg [11:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$scope module TB_CASE_2 $end
+$var wire 10 K addra [9:0] $end
+$var wire 1 & clka $end
+$var wire 12 L dina [11:0] $end
+$var wire 1 M ena $end
+$var wire 1 N regcea $end
+$var wire 1 + rsta $end
+$var wire 1 O wea $end
+$var wire 12 P douta [11:0] $end
+$var parameter 168 Q INIT_FILE $end
+$var parameter 32 R RAM_DEPTH $end
+$var parameter 128 S RAM_PERFORMANCE $end
+$var parameter 32 T RAM_WIDTH $end
+$var reg 12 U ram_data [11:0] $end
+$scope function clogb2 $end
+$var integer 32 V depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 12 W douta_reg [11:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$scope module TB_CASE_3 $end
+$var wire 10 X addra [9:0] $end
+$var wire 1 & clka $end
+$var wire 12 Y dina [11:0] $end
+$var wire 1 Z ena $end
+$var wire 1 [ regcea $end
+$var wire 1 + rsta $end
+$var wire 1 \ wea $end
+$var wire 12 ] douta [11:0] $end
+$var parameter 168 ^ INIT_FILE $end
+$var parameter 32 _ RAM_DEPTH $end
+$var parameter 128 ` RAM_PERFORMANCE $end
+$var parameter 32 a RAM_WIDTH $end
+$var reg 12 b ram_data [11:0] $end
+$scope function clogb2 $end
+$var integer 32 c depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 12 d douta_reg [11:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1100 a
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 `
+b1001000000 _
+b11001000110000101110100011000010010111101010010010001010100111101010010010001000100010101010010010111110101010001000010010111110011001100101110011011010110010101101101 ^
+b1100 T
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 S
+b1001000000 R
+b11001000110000101110100011000010010111101010010010001010100111101010010010001000100010101010010010111110101010001000010010111110011001000101110011011010110010101101101 Q
+b1100 G
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 F
+b1001000000 E
+b11001000110000101110100011000010010111101010010010001010100111101010010010001000100010101010010010111110101010001000010010111110011000100101110011011010110010101101101 D
+$end
+#0
+$dumpvars
+b0 d
+bx c
+b0 b
+b0 ]
+0\
+1[
+1Z
+b0 Y
+b0 X
+b0 W
+bx V
+b0 U
+b0 P
+0O
+1N
+1M
+b0 L
+b0 K
+b0 J
+bx I
+b0 H
+b0 C
+0B
+1A
+1@
+b0 ?
+b0 >
+bx =
+bx <
+bx ;
+bx :
+bx 9
+bx 8
+bx 7
+bx 6
+bx 5
+b0 4
+b0 3
+b0 2
+bx00 1
+b0 0
+b0 /
+b0 .
+b11010111 -
+0,
+0+
+0*
+b0 )
+b0 (
+0'
+0&
+b0 %
+b11010111 $
+x#
+bx "
+bx !
+$end
+#10000
+bx011010111 5
+bx0 <
+bx00 6
+bx0 =
+bx0000000000 ;
+bx0 7
+bx00 9
+1&
+#20000
+0&
+1+
+#30000
+b0 ;
+b0 !
+b0 :
+b0 7
+b0 9
+1&
+#40000
+0&
+0+
+#50000
+b1101011100 1
+b11010111011010111 5
+b0 <
+b0 6
+b0 =
+0#
+b0 "
+b0 8
+1&
+#60000
+0&
+b1111 )
+b1111 0
+b1111 >
+b1111 K
+b1111 X
+1'
+#70000
+b1111 ;
+b1 7
+b1111 b
+b10101 U
+b1111 H
+1&
+#80000
+0&
+b10010 )
+b10010 0
+b10010 >
+b10010 K
+b10010 X
+#90000
+b1111 4
+b1111 C
+b1111 J
+b10010 H
+b10101 3
+b10101 P
+b10101 W
+b10011 U
+b1111 2
+b1111 ]
+b1111 d
+b10010 b
+b11110000010010 ;
+b11 7
+1&
+#100000
+0&
+b1001110 )
+b1001110 0
+b1001110 >
+b1001110 K
+b1001110 X
+1*
+b10 %
+b10 .
+1,
+1'
+#110000
+b1 <
+b10 6
+b1 =
+b100100001001110 ;
+b1111 !
+b1111 :
+1#
+b1001110 b
+b10010 2
+b10010 ]
+b10010 d
+b1001111 U
+b10011 3
+b10011 P
+b10011 W
+b1001111 H
+b10010 4
+b10010 C
+b10010 J
+1&
+#120000
+0&
+b1001111 )
+b1001111 0
+b1001111 >
+b1001111 K
+b1001111 X
+#130000
+b1001111 4
+b1001111 C
+b1001111 J
+b1010010 H
+b1001111 3
+b1001111 P
+b1001111 W
+b1010010 U
+b1001110 2
+b1001110 ]
+b1001110 d
+b1001111 b
+b11 <
+b1010 6
+b11 =
+b10011100001001111 ;
+b10010 !
+b10010 :
+1&
+#140000
+0&
+0'
+#150000
+b10011110001001111 ;
+b10 7
+b1001111 !
+b1001111 :
+b1001111 2
+b1001111 ]
+b1001111 d
+b1010010 3
+b1010010 P
+b1010010 W
+b1010010 4
+b1010010 C
+b1010010 J
+1&
+#160000
+0&
+#170000
+b0 7
+b1010010 !
+b1010010 :
+1&
+#180000
+0&
+#190000
+0#
+1&
+#200000
+0&
+#210000
+1&
+#220000
+0&
+#230000
+1&
+#240000
+0&

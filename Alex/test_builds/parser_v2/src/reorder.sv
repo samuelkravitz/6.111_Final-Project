@@ -10,13 +10,15 @@ when the side information line goes high.
 otherwise, the si_valid line is NOT used to verify the
 actual side information inputs. Those are fed in from a different system
 so I don't have to have 4x the number of lines into this module
+
+STATUS:
 */
 
 module reorder (
   input wire clk,
   input wire rst,
 
-  input wire [1:0] grch,
+  input wire [1:0] grch_in,
   input wire [9:0] is_pos,
   input wire din_v,
 
@@ -25,9 +27,9 @@ module reorder (
   input wire mixed_block_flag,
   input wire [8:0] big_values,
 
-  output logic [1:0] grch,
-  output logic dout_v,
-  output logic [9:0] is_pos_out;
+  output logic [1:0] grch_out,
+  output logic [9:0] is_pos_out,
+  output logic dout_v
 
   );
 
@@ -103,6 +105,9 @@ module reorder (
       is_pos_pipe <= 0;
     end else begin
 
+      grch_out <= grch_pipe[1];
+      dout_v <= din_v_pipe[1];
+
       if (window_switching_flag_pipe[1] && (block_type_pipe[1] == 2) && (mixed_block_flag_pipe[1])) begin
         is_pos_out <= (is_pos_pipe[1] < count1) ? case_1_out : is_pos_pipe[1];
       end else if (window_switching_flag_pipe[1] && (block_type_pipe[1] == 2)) begin
@@ -112,7 +117,7 @@ module reorder (
       end
 
 
-      grch_pipe[0] <= grch;
+      grch_pipe[0] <= grch_in;
       grch_pipe[1] <= grch_pipe[0];
 
       din_v_pipe <= {din_v_pipe[0], din_v};
