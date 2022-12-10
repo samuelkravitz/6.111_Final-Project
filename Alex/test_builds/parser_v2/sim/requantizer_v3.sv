@@ -3,7 +3,7 @@
 
 `include "iverilog_hack.svh"
 
-module requantizer_v2 (
+module requantizer_v3 (
   input wire clk,
   input wire rst,
 
@@ -23,8 +23,9 @@ module requantizer_v2 (
   input wire [9:0] is_pos,    //BRAM ADDRA in huffman_plexer
   input wire din_v,
 
-  output logic [15:0] x_out,
-  output logic [9:0] x_base_out,    //the assumption is that the base is negative. it always is man. so the is x_out >> x_base_out
+  // output logic [15:0] x_out,
+  // output logic [9:0] x_base_out,    //the assumption is that the base is negative. it always is man. so the is x_out >> x_base_out
+  output logic [31:0] dout,
   output logic dout_v
   );
 
@@ -142,6 +143,17 @@ module requantizer_v2 (
 
 
   //COMPUTE THE requantized x values for all 3 cases:
+
+  logic signed [9:0] x_base;
+  logic [9:0] x_base_mask;
+  logic [9:0] x_base_abs;
+  logic signed [15:0] x_16bit;
+  logic signed [9:0] x_16bit_shift;
+  logic signed [63:0] q32_32;
+  logic signed [31:0] q2_30;
+  logic signed [63:0] q4_60_part2;
+  logic signed [9:0] tmp;
+
   always_comb begin
     dout_v = din_v_pipe[1];
     scalefac_shift = (scalefac_scale_pipe[1]) ? 0 : 1;    //takes only the first 4 bits (just verilog)
@@ -176,8 +188,8 @@ module requantizer_v2 (
         exp2 = ($signed(scalefac_sel + preflag_pipe[1] * pretab)) <<< (2'd2 - scalefac_shift);  //making this 'fixed point'...
         x_quant_base_signed = $signed(exp1 - exp2 - (x_tab_base << 2));
         x_quant_base_signed_mask = x_quant_base_signed >>> 10;
-        x_base_out = (x_quant_base_signed ^ x_quant_base_signed_mask) - x_quant_base_signed_mask;    //if the x_base_out_signed is positive, just set the base to 0. don't want to deal with that.
-        x_out = (x_in_pipe[1][15]) ? -1'sd1 * x_pow_43 : x_pow_43;
+        x_base = (x_quant_base_signed ^ x_quant_base_signed_mask) - x_quant_base_signed_mask;    //if the x_base_out_signed is positive, just set the base to 0. don't want to deal with that.
+        x_16bit = (x_in_pipe[1][15]) ? -1'sd1 * x_pow_43 : x_pow_43;
       end
       2'd0 : begin
         //SHORT BLOCK FORMULA
@@ -186,18 +198,33 @@ module requantizer_v2 (
         x_quant_base_signed = $signed(exp1 - exp2 - (x_tab_base << 2));
         exp2 = ($signed(scalefac_sel)) <<< (2'd2 - scalefac_shift);
         x_quant_base_signed_mask = x_quant_base_signed >>> 10;
-        x_base_out = (x_quant_base_signed ^ x_quant_base_signed_mask) - x_quant_base_signed_mask;    //if the x_base_out_signed is positive, just set the base to 0. don't want to deal with that.
-        x_out = (x_in_pipe[1][15]) ? -1'sd1 * x_pow_43 : x_pow_43;
+        x_base = (x_quant_base_signed ^ x_quant_base_signed_mask) - x_quant_base_signed_mask;    //if the x_base_out_signed is positive, just set the base to 0. don't want to deal with that.
+        x_16bit = (x_in_pipe[1][15]) ? -1'sd1 * x_pow_43 : x_pow_43;
       end
       2'd2 : begin
         //COUNT1 REGION FORMULA: (ASSUMED?)
-        x_out = x_in_pipe[1];
-        x_base_out = 0;     //its just 1,0, or -1
+        x_16bit = x_in_pipe[1];
+        x_base = 0;     //its just 1,0, or -1
       end
     endcase
 
+    //COMPUTE THE DOUT (32 -bit with fixed point at 30):
+    x_base_mask = x_base >>> 10;
+    x_base_abs = (x_base ^ x_base_mask) - x_base_mask;
+    tmp = x_base_abs >> 2;
+    q32_32 = x_16bit <<< (10'd32 - tmp);
+    q2_30 = q32_32 >>> 2;
 
+    case(x_base[1:0])
+    //The keys are flipped for a reason! the x_base is always negative, so 0.25 corresponds to multiplying by 0.75
+      2'b00 : q4_60_part2 = q2_30 * 32'sb00100000000000000000000000000000;
+      2'b11 : q4_60_part2 = q2_30 * 32'sb00110101110100010011111100110010;  //corresponds to -x.25
+      2'b01 : q4_60_part2 = q2_30 * 32'sb00100110000011011111110000010100;  //corresponds to -x.25
+      2'b10 : q4_60_part2 = q2_30 * 32'sb00101101010000010011110011001100;  //
+    endcase
 
+    // dout = q32_32_part2[61:30];
+    dout = q4_60_part2 >>> 30;
   end
 
   always_ff @(posedge clk) begin

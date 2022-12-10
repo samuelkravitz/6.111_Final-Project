@@ -23,11 +23,11 @@ module sf_parser #(parameter GR = 0,
   input wire axiiv,
 
   input wire si_valid,
-  input wire [1:0][1:0][3:0] scalefac_compress_in,
-  input wire [1:0][1:0]window_switching_flag_in,
-  input wire [1:0][1:0][1:0] block_type_in,
-  input wire [1:0][1:0]mixed_block_flag_in,
-  input wire [1:0][3:0] scfsi_in,
+  input wire [3:0] scalefac_compress_in,
+  input wire window_switching_flag_in,
+  input wire [1:0] block_type_in,
+  input wire mixed_block_flag_in,
+  input wire [3:0] scfsi_in,
 
   output logic [11:0][2:0][3:0] scalefac_s,
   output logic [20:0][3:0] scalefac_l,
@@ -107,11 +107,11 @@ module sf_parser #(parameter GR = 0,
         bit_counter <= 0;
       end else begin
         if (si_valid) begin
-          scalefac_compress <= scalefac_compress_in[GR][CH];
-          window_switching_flag <= window_switching_flag_in[GR][CH];
-          block_type <= block_type_in[GR][CH];
-          mixed_block_flag <= mixed_block_flag_in[GR][CH];
-          scfsi <= scfsi_in[CH];
+          scalefac_compress <= scalefac_compress_in;
+          window_switching_flag <= window_switching_flag_in;
+          block_type <= block_type_in;
+          mixed_block_flag <= mixed_block_flag_in;
+          scfsi <= scfsi_in;
 
           //also just reset all the other variables for now:
           bit_counter <= (axiiv) ? 1 : 0;

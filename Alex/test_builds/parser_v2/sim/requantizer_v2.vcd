@@ -1,5 +1,5 @@
 $date
-	Thu Dec 08 18:59:09 2022
+	Fri Dec 09 13:01:37 2022
 $end
 $version
 	Icarus Verilog
@@ -8,170 +8,172 @@ $timescale
 	1ps
 $end
 $scope module requantizer_tb $end
-$var wire 16 ! x_out [15:0] $end
-$var wire 10 " x_base_out [9:0] $end
-$var wire 1 # dout_v $end
-$var reg 9 $ big_values [8:0] $end
-$var reg 2 % block_type [1:0] $end
-$var reg 1 & clk $end
-$var reg 1 ' din_valid $end
-$var reg 8 ( global_gain [7:0] $end
-$var reg 10 ) is_pos [9:0] $end
-$var reg 1 * mixed_block_flag $end
-$var reg 1 + preflag $end
-$var reg 1 , rst $end
-$var reg 84 - scalefac_l_in [83:0] $end
-$var reg 144 . scalefac_s_in [143:0] $end
-$var reg 1 / scalefac_scale $end
-$var reg 9 0 subblock_gain [8:0] $end
-$var reg 1 1 window_switching_flag $end
-$var reg 16 2 x_in [15:0] $end
+$var wire 1 ! dout_v $end
+$var wire 32 " dout [31:0] $end
+$var reg 9 # big_values [8:0] $end
+$var reg 2 $ block_type [1:0] $end
+$var reg 1 % clk $end
+$var reg 1 & din_valid $end
+$var reg 8 ' global_gain [7:0] $end
+$var reg 10 ( is_pos [9:0] $end
+$var reg 1 ) mixed_block_flag $end
+$var reg 1 * preflag $end
+$var reg 1 + rst $end
+$var reg 84 , scalefac_l_in [83:0] $end
+$var reg 144 - scalefac_s_in [143:0] $end
+$var reg 1 . scalefac_scale $end
+$var reg 9 / subblock_gain [8:0] $end
+$var reg 1 0 window_switching_flag $end
+$var reg 16 1 x_in [15:0] $end
 $scope module shit $end
-$var wire 9 3 big_values_in [8:0] $end
-$var wire 2 4 block_type_in [1:0] $end
-$var wire 1 & clk $end
-$var wire 1 ' din_v $end
-$var wire 8 5 global_gain_in [7:0] $end
-$var wire 10 6 is_pos [9:0] $end
-$var wire 1 * mixed_block_flag_in $end
-$var wire 1 + preflag_in $end
-$var wire 1 , rst $end
-$var wire 84 7 scalefac_l_in [83:0] $end
-$var wire 144 8 scalefac_s_in [143:0] $end
-$var wire 1 / scalefac_scale_in $end
-$var wire 9 9 subblock_gain_in [8:0] $end
-$var wire 1 1 window_switching_flag_in $end
-$var wire 16 : x_in [15:0] $end
-$var wire 4 ; x_tab_base [3:0] $end
-$var wire 16 < x_pow_43 [15:0] $end
-$var wire 16 = x_in_mask [15:0] $end
-$var wire 16 > x_abs [15:0] $end
-$var wire 10 ? p43_table_input [9:0] $end
-$var wire 10 @ count1 [9:0] $end
-$var wire 4 A c3_win [3:0] $end
-$var wire 12 B c3_sfb [11:0] $end
-$var wire 4 C c3_bt [3:0] $end
-$var wire 4 D c2_win [3:0] $end
-$var wire 12 E c2_sfb [11:0] $end
-$var wire 4 F c2_bt [3:0] $end
-$var wire 4 G c1_win [3:0] $end
-$var wire 12 H c1_sfb [11:0] $end
-$var wire 4 I c1_bt [3:0] $end
-$var reg 27 J big_values_pipe [26:0] $end
-$var reg 6 K block_type_pipe [5:0] $end
-$var reg 2 L bt [1:0] $end
-$var reg 3 M din_v_pipe [2:0] $end
-$var reg 1 # dout_v $end
-$var reg 10 N exp1 [9:0] $end
-$var reg 12 O exp2 [11:0] $end
-$var reg 24 P global_gain_pipe [23:0] $end
-$var reg 30 Q is_pos_pipe [29:0] $end
-$var reg 3 R mixed_block_flag_pipe [2:0] $end
-$var reg 3 S preflag_pipe [2:0] $end
-$var reg 3 T pretab [2:0] $end
-$var reg 252 U scalefac_l_pipe [251:0] $end
-$var reg 432 V scalefac_s_pipe [431:0] $end
-$var reg 3 W scalefac_scale_pipe [2:0] $end
-$var reg 4 X scalefac_sel [3:0] $end
-$var reg 1 Y scalefac_shift $end
-$var reg 12 Z sfb [11:0] $end
-$var reg 27 [ subblock_gain_pipe [26:0] $end
-$var reg 3 \ target_subblock_gain [2:0] $end
-$var reg 3 ] win [2:0] $end
-$var reg 3 ^ window_switching_flag_pipe [2:0] $end
-$var reg 10 _ x_base_out [9:0] $end
-$var reg 48 ` x_in_pipe [47:0] $end
-$var reg 16 a x_out [15:0] $end
-$var reg 12 b x_quant_base_signed [11:0] $end
-$var reg 12 c x_quant_base_signed_mask [11:0] $end
+$var wire 9 2 big_values_in [8:0] $end
+$var wire 2 3 block_type_in [1:0] $end
+$var wire 1 % clk $end
+$var wire 1 & din_v $end
+$var wire 8 4 global_gain_in [7:0] $end
+$var wire 10 5 is_pos [9:0] $end
+$var wire 1 ) mixed_block_flag_in $end
+$var wire 1 * preflag_in $end
+$var wire 1 + rst $end
+$var wire 84 6 scalefac_l_in [83:0] $end
+$var wire 144 7 scalefac_s_in [143:0] $end
+$var wire 1 . scalefac_scale_in $end
+$var wire 9 8 subblock_gain_in [8:0] $end
+$var wire 1 0 window_switching_flag_in $end
+$var wire 16 9 x_in [15:0] $end
+$var wire 4 : x_tab_base [3:0] $end
+$var wire 16 ; x_pow_43 [15:0] $end
+$var wire 16 < x_in_mask [15:0] $end
+$var wire 16 = x_abs [15:0] $end
+$var wire 10 > p43_table_input [9:0] $end
+$var wire 10 ? count1 [9:0] $end
+$var wire 4 @ c3_win [3:0] $end
+$var wire 12 A c3_sfb [11:0] $end
+$var wire 4 B c3_bt [3:0] $end
+$var wire 4 C c2_win [3:0] $end
+$var wire 12 D c2_sfb [11:0] $end
+$var wire 4 E c2_bt [3:0] $end
+$var wire 4 F c1_win [3:0] $end
+$var wire 12 G c1_sfb [11:0] $end
+$var wire 4 H c1_bt [3:0] $end
+$var reg 27 I big_values_pipe [26:0] $end
+$var reg 6 J block_type_pipe [5:0] $end
+$var reg 2 K bt [1:0] $end
+$var reg 3 L din_v_pipe [2:0] $end
+$var reg 32 M dout [31:0] $end
+$var reg 64 N dout_64 [63:0] $end
+$var reg 32 O dout_tmp [31:0] $end
+$var reg 1 ! dout_v $end
+$var reg 10 P exp1 [9:0] $end
+$var reg 12 Q exp2 [11:0] $end
+$var reg 24 R global_gain_pipe [23:0] $end
+$var reg 30 S is_pos_pipe [29:0] $end
+$var reg 3 T mixed_block_flag_pipe [2:0] $end
+$var reg 3 U preflag_pipe [2:0] $end
+$var reg 3 V pretab [2:0] $end
+$var reg 252 W scalefac_l_pipe [251:0] $end
+$var reg 432 X scalefac_s_pipe [431:0] $end
+$var reg 3 Y scalefac_scale_pipe [2:0] $end
+$var reg 4 Z scalefac_sel [3:0] $end
+$var reg 1 [ scalefac_shift $end
+$var reg 12 \ sfb [11:0] $end
+$var reg 27 ] subblock_gain_pipe [26:0] $end
+$var reg 3 ^ target_subblock_gain [2:0] $end
+$var reg 3 _ win [2:0] $end
+$var reg 3 ` window_switching_flag_pipe [2:0] $end
+$var reg 16 a x_15bit [15:0] $end
+$var reg 10 b x_base [9:0] $end
+$var reg 48 c x_in_pipe [47:0] $end
+$var reg 12 d x_quant_base_signed [11:0] $end
+$var reg 12 e x_quant_base_signed_mask [11:0] $end
 $scope module POW43_TB $end
-$var wire 10 d addra [9:0] $end
-$var wire 1 & clka $end
-$var wire 20 e dina [19:0] $end
-$var wire 1 f ena $end
-$var wire 1 g regcea $end
-$var wire 1 , rsta $end
-$var wire 1 h wea $end
-$var wire 20 i douta [19:0] $end
-$var parameter 152 j INIT_FILE $end
-$var parameter 32 k RAM_DEPTH $end
-$var parameter 128 l RAM_PERFORMANCE $end
-$var parameter 32 m RAM_WIDTH $end
-$var reg 20 n ram_data [19:0] $end
+$var wire 10 f addra [9:0] $end
+$var wire 1 % clka $end
+$var wire 20 g dina [19:0] $end
+$var wire 1 h ena $end
+$var wire 1 i regcea $end
+$var wire 1 + rsta $end
+$var wire 1 j wea $end
+$var wire 20 k douta [19:0] $end
+$var parameter 152 l INIT_FILE $end
+$var parameter 32 m RAM_DEPTH $end
+$var parameter 128 n RAM_PERFORMANCE $end
+$var parameter 32 o RAM_WIDTH $end
+$var reg 20 p ram_data [19:0] $end
 $scope function clogb2 $end
-$var integer 32 o depth [31:0] $end
+$var integer 32 q depth [31:0] $end
 $upscope $end
 $scope begin output_register $end
-$var reg 20 p douta_reg [19:0] $end
+$var reg 20 r douta_reg [19:0] $end
 $upscope $end
 $scope begin use_init_file $end
 $upscope $end
 $upscope $end
 $scope module TB_CASE_1 $end
-$var wire 10 q addra [9:0] $end
-$var wire 1 & clka $end
-$var wire 20 r dina [19:0] $end
-$var wire 1 s ena $end
-$var wire 1 t regcea $end
-$var wire 1 , rsta $end
-$var wire 1 u wea $end
-$var wire 20 v douta [19:0] $end
-$var parameter 208 w INIT_FILE $end
-$var parameter 32 x RAM_DEPTH $end
-$var parameter 128 y RAM_PERFORMANCE $end
-$var parameter 32 z RAM_WIDTH $end
-$var reg 20 { ram_data [19:0] $end
+$var wire 10 s addra [9:0] $end
+$var wire 1 % clka $end
+$var wire 20 t dina [19:0] $end
+$var wire 1 u ena $end
+$var wire 1 v regcea $end
+$var wire 1 + rsta $end
+$var wire 1 w wea $end
+$var wire 20 x douta [19:0] $end
+$var parameter 208 y INIT_FILE $end
+$var parameter 32 z RAM_DEPTH $end
+$var parameter 128 { RAM_PERFORMANCE $end
+$var parameter 32 | RAM_WIDTH $end
+$var reg 20 } ram_data [19:0] $end
 $scope function clogb2 $end
-$var integer 32 | depth [31:0] $end
+$var integer 32 ~ depth [31:0] $end
 $upscope $end
 $scope begin output_register $end
-$var reg 20 } douta_reg [19:0] $end
+$var reg 20 !" douta_reg [19:0] $end
 $upscope $end
 $scope begin use_init_file $end
 $upscope $end
 $upscope $end
 $scope module TB_CASE_2 $end
-$var wire 10 ~ addra [9:0] $end
-$var wire 1 & clka $end
-$var wire 20 !" dina [19:0] $end
-$var wire 1 "" ena $end
-$var wire 1 #" regcea $end
-$var wire 1 , rsta $end
-$var wire 1 $" wea $end
-$var wire 20 %" douta [19:0] $end
-$var parameter 208 &" INIT_FILE $end
-$var parameter 32 '" RAM_DEPTH $end
-$var parameter 128 (" RAM_PERFORMANCE $end
-$var parameter 32 )" RAM_WIDTH $end
-$var reg 20 *" ram_data [19:0] $end
+$var wire 10 "" addra [9:0] $end
+$var wire 1 % clka $end
+$var wire 20 #" dina [19:0] $end
+$var wire 1 $" ena $end
+$var wire 1 %" regcea $end
+$var wire 1 + rsta $end
+$var wire 1 &" wea $end
+$var wire 20 '" douta [19:0] $end
+$var parameter 208 (" INIT_FILE $end
+$var parameter 32 )" RAM_DEPTH $end
+$var parameter 128 *" RAM_PERFORMANCE $end
+$var parameter 32 +" RAM_WIDTH $end
+$var reg 20 ," ram_data [19:0] $end
 $scope function clogb2 $end
-$var integer 32 +" depth [31:0] $end
+$var integer 32 -" depth [31:0] $end
 $upscope $end
 $scope begin output_register $end
-$var reg 20 ," douta_reg [19:0] $end
+$var reg 20 ." douta_reg [19:0] $end
 $upscope $end
 $scope begin use_init_file $end
 $upscope $end
 $upscope $end
 $scope module TB_CASE_3 $end
-$var wire 10 -" addra [9:0] $end
-$var wire 1 & clka $end
-$var wire 20 ." dina [19:0] $end
-$var wire 1 /" ena $end
-$var wire 1 0" regcea $end
-$var wire 1 , rsta $end
-$var wire 1 1" wea $end
-$var wire 20 2" douta [19:0] $end
-$var parameter 208 3" INIT_FILE $end
-$var parameter 32 4" RAM_DEPTH $end
-$var parameter 128 5" RAM_PERFORMANCE $end
-$var parameter 32 6" RAM_WIDTH $end
-$var reg 20 7" ram_data [19:0] $end
+$var wire 10 /" addra [9:0] $end
+$var wire 1 % clka $end
+$var wire 20 0" dina [19:0] $end
+$var wire 1 1" ena $end
+$var wire 1 2" regcea $end
+$var wire 1 + rsta $end
+$var wire 1 3" wea $end
+$var wire 20 4" douta [19:0] $end
+$var parameter 208 5" INIT_FILE $end
+$var parameter 32 6" RAM_DEPTH $end
+$var parameter 128 7" RAM_PERFORMANCE $end
+$var parameter 32 8" RAM_WIDTH $end
+$var reg 20 9" ram_data [19:0] $end
 $scope function clogb2 $end
-$var integer 32 8" depth [31:0] $end
+$var integer 32 :" depth [31:0] $end
 $upscope $end
 $scope begin output_register $end
-$var reg 20 9" douta_reg [19:0] $end
+$var reg 20 ;" douta_reg [19:0] $end
 $upscope $end
 $scope begin use_init_file $end
 $upscope $end
@@ -181,77 +183,79 @@ $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b10100 6"
-b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 5"
-b1001000000 4"
-b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011001100101110011011010110010101101101 3"
-b10100 )"
-b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 ("
-b1001000000 '"
-b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011001000101110011011010110010101101101 &"
-b10100 z
-b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 y
-b1001000000 x
-b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011000100101110011011010110010101101101 w
-b10100 m
-b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 l
-b1111101000 k
-b1100100011000010111010001100001001011110111000001101111011101110101111100110100001100110101111101110100011000010110001000101110011011010110010101101101 j
+b10100 8"
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 7"
+b1001000000 6"
+b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011001100101110011011010110010101101101 5"
+b10100 +"
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 *"
+b1001000000 )"
+b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011001000101110011011010110010101101101 ("
+b10100 |
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 {
+b1001000000 z
+b110010001100001011101000110000100101111010001100101010101001100010011000101111101010111010010010100111001011111010100110100011001000010010111110101010001000010010111110011000100101110011011010110010101101101 y
+b10100 o
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 n
+b1111101000 m
+b1100100011000010111010001100001001011110111000001101111011101110101111100110100001100110101111101110100011000010110001000101110011011010110010101101101 l
 $end
 #0
 $dumpvars
+b0 ;"
+bx :"
 b0 9"
-bx 8"
-b0 7"
-b0 2"
-01"
-10"
-1/"
+b0 4"
+03"
+12"
+11"
+b0 0"
+b0 /"
 b0 ."
-b0 -"
+bx -"
 b0 ,"
-bx +"
-b0 *"
-b0 %"
-0$"
-1#"
-1""
+b0 '"
+0&"
+1%"
+1$"
+b0 #"
+b0 ""
 b0 !"
-b0 ~
+bx ~
 b0 }
-bx |
-b0 {
-b0 v
-0u
-1t
-1s
+b0 x
+0w
+1v
+1u
+b0 t
+b0 s
 b0 r
-b0 q
+bx q
 b0 p
-bx o
-b0 n
-b0 i
-0h
-1g
-1f
-b0 e
-b0 d
+b0 k
+0j
+1i
+1h
+b0 g
+b0 f
+bx e
+bx d
 bx c
 bx b
 bx a
 bx `
-bx _
+b0 _
 bx ^
-b0 ]
-bx \
-bx [
-b0 Z
-xY
+bx ]
+b0 \
+x[
+bx Z
+bx Y
 bx X
 bx W
-bx V
+b0 V
 bx U
-b0 T
+bx T
 bx S
 bx R
 bx Q
@@ -259,10 +263,10 @@ bx P
 bx O
 bx N
 bx M
-bx0 L
-bx K
+bx L
+bx0 K
 bx J
-b0 I
+bx I
 b0 H
 b0 G
 b0 F
@@ -271,8 +275,8 @@ b0 D
 b0 C
 b0 B
 b0 A
-b1101100100 @
-b0 ?
+b0 @
+b110110010 ?
 b0 >
 b0 =
 b0 <
@@ -280,280 +284,270 @@ b0 ;
 b0 :
 b0 9
 b0 8
-b10000 7
-b0 6
-b10011111 5
-b0 4
-b11011001 3
-b0 2
-01
-b0 0
-0/
-b0 .
-b10000 -
-0,
+b0 7
+b10000 6
+b0 5
+b10011111 4
+b0 3
+b11011001 2
+b0 1
+00
+b0 /
+0.
+b0 -
+b10000 ,
 0+
 0*
-b0 )
-b10011111 (
-0'
+0)
+b0 (
+b10011111 '
 0&
-b0 %
-b11011001 $
-x#
+0%
+b0 $
+b11011001 #
 bx "
-bx !
+x!
 $end
 #10000
-b1 {
-b1 7"
-b11100000000000000000 n
-bx0000000000000000 `
-bx0 M
-bx0000000000 Q
-bx000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 V
-bx000000000000000000000000000000000000000000000000000000000000000000000000000000010000 U
-bx011011001 J
-bx000000000 [
-bx0 S
-bx10011111 P
-bx0 W
-bx0 R
-bx00 K
-bx0 ^
-1&
+b1 }
+b1 9"
+b11100000000000000000 p
+bx0000000000000000 c
+bx0 L
+bx0000000000 S
+bx000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 X
+bx000000000000000000000000000000000000000000000000000000000000000000000000000000010000 W
+bx011011001 I
+bx000000000 ]
+bx0 U
+bx10011111 R
+bx0 Y
+bx0 T
+bx00 J
+bx0 `
+1%
 #20000
-0&
-1,
+0%
+1+
 #30000
-b0 L
-b0 \
-1Y
-0#
-b0 `
-b0 M
+b0 a
 b0 Q
-b0 V
-b0 U
-b0 J
-b0 [
-b0 S
-b0 P
-b0 W
-b0 R
+b1100101110 P
+b0 Z
 b0 K
 b0 ^
-1&
-#40000
-b111 ?
-b111 d
-b111 >
-0&
-b111 2
-b111 :
-1'
-0,
-#50000
-b1 L
-b1011110110 "
-b1011110110 _
+1[
+0!
 b0 c
-b1011110110 b
-b1 I
-b1 C
-b1110 ;
-b0 !
-b0 a
-b0 O
-b1100101110 N
+b0 L
+b0 S
 b0 X
-b1 v
-b1 }
-b1 2"
-b1 9"
-b11100000000000000000 i
-b11100000000000000000 p
-b10100011010110001111 n
-b111 `
-b1 M
-b10000 U
-b11011001 J
-b10011111 P
+b0 W
+b0 I
+b0 ]
+b0 U
+b0 R
+b0 Y
+b0 T
+b0 J
+b0 `
+1%
+#40000
+b111 >
+b111 f
+b111 =
+0%
+b111 1
+b111 9
 1&
-#60000
-b100 ?
-b100 d
-b100 >
-0&
-b1 )
-b1 6
-b1 q
-b1 ~
-b1 -"
-b100 2
-b100 :
-#70000
-b11010110001111 !
-b11010110001111 a
-b1110100101 "
-b1110100101 _
-b1110100101 b
-b1111001101 N
-1#
-b11010110001111 <
-b1010 ;
-b11 M
-b10000000000000000000000000000000000000000000000000000000000000000000000000000000000010000 U
-b11011001011011001 J
-b1001111110011111 P
-b1110000000000000100 `
-b1 Q
-b10110011001011001011 n
-b10100011010110001111 i
-b10100011010110001111 p
-1&
-#80000
-b100 >
-b1111111111111111 =
-0&
-b10 )
-b10 6
-b10 q
-b10 ~
-b10 -"
-b1111111111111100 2
-b1111111111111100 :
-#90000
-b11001011001011 !
-b11001011001011 a
-b1110100001 "
-b1110100001 _
-b1110100001 b
-b11001011001011 <
-b1011 ;
-b10110011001011001011 i
-b10110011001011001011 p
-b1001111111111111100 `
-b10000000010 Q
-1&
-#100000
-b100000 ?
-b100000 d
-b100000 >
-b0 =
-0&
-b11 )
-b11 6
-b11 q
-b11 ~
-b11 -"
-b100000 2
-b100000 :
-#110000
-b1100110100110101 !
-b1100110100110101 a
-b11111111111111000000000000100000 `
-b100000000011 Q
-b1110011001011001011 n
-1&
-#120000
-b1001 ?
-b1001 d
-b1001 >
-b1111111111111111 =
-0&
-b100 )
-b100 6
-b100 q
-b100 ~
-b100 -"
-b1111111111110111 2
-b1111111111110111 :
-#130000
-b1110110001 "
-b1110110001 _
-b1110110001 b
-b111 ;
-b11001011001011 !
-b11001011001011 a
-b100000001 {
-b10000 *"
-b100000001 7"
-b1110011001011001011 i
-b1110011001011001011 p
-b10010010010101110001 n
-b1000001111111111110111 `
-b110000000100 Q
-1&
-#140000
-0&
-0'
-#150000
-b1 Z
-b1101101010001111 !
-b1101101010001111 a
-b1110101001 "
-b1110101001 _
-b1110101001 b
-b10010101110001 <
-b1001 ;
-b1 B
-b1 D
+0+
+#50000
+b1 K
 b1 H
-b11111111111101111111111111110111 `
-b1000000000100 Q
-b10 M
-b10010010010101110001 i
-b10010010010101110001 p
-b100000001 2"
-b100000001 9"
-b10000 %"
-b10000 ,"
-b100000001 v
-b100000001 }
-1&
-#160000
-0&
-#170000
-b1110100111 "
-b1110100111 _
-b1110100111 b
-b10 O
-b1 X
-0#
+b1 B
+b1110 :
+b0 "
 b0 M
-1&
+b0 N
+b0 O
+b1011110110 b
+b0 e
+b1011110110 d
+b1 x
+b1 !"
+b1 4"
+b1 ;"
+b11100000000000000000 k
+b11100000000000000000 r
+b10100011010110001111 p
+b111 c
+b1 L
+b10000 W
+b11011001 I
+b10011111 R
+1%
+#60000
+b100 >
+b100 f
+b100 =
+0%
+b1 (
+b1 5
+b1 s
+b1 ""
+b1 /"
+b100 1
+b100 9
+#70000
+b11010110001111 a
+b1110100101 b
+b1110100101 d
+b1111001101 P
+1!
+b11010110001111 ;
+b1010 :
+b11 L
+b10000000000000000000000000000000000000000000000000000000000000000000000000000000000010000 W
+b11011001011011001 I
+b1001111110011111 R
+b1110000000000000100 c
+b1 S
+b10110011001011001011 p
+b10100011010110001111 k
+b10100011010110001111 r
+1%
+#80000
+b100 =
+b1111111111111111 <
+0%
+b10 (
+b10 5
+b10 s
+b10 ""
+b10 /"
+b1111111111111100 1
+b1111111111111100 9
+#90000
+b11001011001011 a
+b1110100001 b
+b1110100001 d
+b11001011001011 ;
+b1011 :
+b10110011001011001011 k
+b10110011001011001011 r
+b1001111111111111100 c
+b10000000010 S
+1%
+#100000
+b100000 >
+b100000 f
+b100000 =
+b0 <
+0%
+b11 (
+b11 5
+b11 s
+b11 ""
+b11 /"
+b100000 1
+b100000 9
+#110000
+b1100110100110101 a
+b11111111111111000000000000100000 c
+b100000000011 S
+b1110011001011001011 p
+1%
+#120000
+b1001 >
+b1001 f
+b1001 =
+b1111111111111111 <
+0%
+b100 (
+b100 5
+b100 s
+b100 ""
+b100 /"
+b1111111111110111 1
+b1111111111110111 9
+#130000
+b1110110001 b
+b1110110001 d
+b111 :
+b11001011001011 a
+b100000001 }
+b10000 ,"
+b100000001 9"
+b1110011001011001011 k
+b1110011001011001011 r
+b10010010010101110001 p
+b1000001111111111110111 c
+b110000000100 S
+1%
+#140000
+0%
+0&
+#150000
+b1101101010001111 a
+b1110100111 b
+b1110100111 d
+b10 Q
+b1 Z
+b1 \
+b10010101110001 ;
+b1001 :
+b1 A
+b1 C
+b1 G
+b11111111111101111111111111110111 c
+b1000000000100 S
+b10 L
+b10010010010101110001 k
+b10010010010101110001 r
+b100000001 4"
+b100000001 ;"
+b10000 '"
+b10000 ."
+b100000001 x
+b100000001 !"
+1%
+#160000
+0%
+#170000
+0!
+b0 L
+1%
 #180000
-0&
+0%
 #190000
-1&
+1%
 #200000
-0&
+0%
 #210000
-1&
+1%
 #220000
-0&
+0%
 #230000
-1&
+1%
 #240000
-0&
+0%
 #250000
-1&
+1%
 #260000
-0&
+0%
 #270000
-1&
+1%
 #280000
-0&
+0%
 #290000
-1&
+1%
 #300000
-0&
+0%
 #310000
-1&
+1%
 #320000
-0&
+0%
 #330000
-1&
+1%
 #340000
-0&
+0%

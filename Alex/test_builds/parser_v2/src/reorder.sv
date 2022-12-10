@@ -95,7 +95,7 @@ module reorder (
 
   logic [9:0] count1;
 
-  assign count1 = big_values_pipe[1] << 2;
+  assign count1 = big_values_pipe[1] << 1;
 
   always_ff @(posedge clk) begin
     if (rst) begin

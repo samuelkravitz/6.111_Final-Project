@@ -1,0 +1,402 @@
+$date
+	Fri Dec 09 01:29:31 2022
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module stereo_tb $end
+$var wire 1 ! gr_out $end
+$var wire 1 " dout_v $end
+$var wire 16 # ch2_out [15:0] $end
+$var wire 16 $ ch1_out [15:0] $end
+$var reg 9 % big_values_in [8:0] $end
+$var reg 2 & block_type_in [1:0] $end
+$var reg 16 ' ch1_in [15:0] $end
+$var reg 16 ( ch2_in [15:0] $end
+$var reg 1 ) clk $end
+$var reg 1 * din_v $end
+$var reg 1 + gr_in $end
+$var reg 10 , is_pos_in [9:0] $end
+$var reg 1 - mixed_block_flag_in $end
+$var reg 2 . mode_ext_in [1:0] $end
+$var reg 2 / mode_in [1:0] $end
+$var reg 1 0 rst $end
+$var reg 84 1 scalefac_l_in [83:0] $end
+$var reg 144 2 scalefac_s_in [143:0] $end
+$var reg 1 3 window_switching_flag_in $end
+$scope module UUT $end
+$var wire 9 4 big_values_in [8:0] $end
+$var wire 2 5 block_type_in [1:0] $end
+$var wire 16 6 ch1_in [15:0] $end
+$var wire 16 7 ch2_in [15:0] $end
+$var wire 1 ) clk $end
+$var wire 1 * din_v $end
+$var wire 1 + gr_in $end
+$var wire 10 8 is_pos_in [9:0] $end
+$var wire 1 - mixed_block_flag_in $end
+$var wire 2 9 mode_ext_in [1:0] $end
+$var wire 2 : mode_in [1:0] $end
+$var wire 1 0 rst $end
+$var wire 84 ; scalefac_l_in [83:0] $end
+$var wire 144 < scalefac_s_in [143:0] $end
+$var wire 1 3 window_switching_flag_in $end
+$var wire 10 = count1 [9:0] $end
+$var wire 4 > c3_win [3:0] $end
+$var wire 8 ? c3_sfb [7:0] $end
+$var wire 4 @ c3_bt [3:0] $end
+$var wire 4 A c2_win [3:0] $end
+$var wire 8 B c2_sfb [7:0] $end
+$var wire 4 C c2_bt [3:0] $end
+$var wire 4 D c1_win [3:0] $end
+$var wire 8 E c1_sfb [7:0] $end
+$var wire 4 F c1_bt [3:0] $end
+$var reg 32 G A [31:0] $end
+$var reg 32 H B [31:0] $end
+$var reg 1 I STEREO $end
+$var reg 18 J big_values_pipe [17:0] $end
+$var reg 4 K block_type_pipe [3:0] $end
+$var reg 2 L bt [1:0] $end
+$var reg 16 M ch1_out [15:0] $end
+$var reg 32 N ch1_pipe [31:0] $end
+$var reg 16 O ch2_out [15:0] $end
+$var reg 32 P ch2_pipe [31:0] $end
+$var reg 2 Q din_v_pipe [1:0] $end
+$var reg 1 " dout_v $end
+$var reg 1 ! gr_out $end
+$var reg 2 R gr_pipe [1:0] $end
+$var reg 20 S is_pos_pipe [19:0] $end
+$var reg 2 T mixed_block_flag_pipe [1:0] $end
+$var reg 4 U mode_ext_pipe [3:0] $end
+$var reg 4 V mode_pipe [3:0] $end
+$var reg 16 W ms_comp_l [15:0] $end
+$var reg 32 X ms_comp_l_int [31:0] $end
+$var reg 16 Y ms_comp_r [15:0] $end
+$var reg 32 Z ms_comp_r_int [31:0] $end
+$var reg 4 [ ratio_idx [3:0] $end
+$var reg 16 \ ratio_l [15:0] $end
+$var reg 16 ] ratio_r [15:0] $end
+$var reg 168 ^ scalefac_l_pipe [167:0] $end
+$var reg 288 _ scalefac_s_pipe [287:0] $end
+$var reg 10 ` sfb [9:0] $end
+$var reg 4 a win [3:0] $end
+$var reg 2 b window_switching_flag_pipe [1:0] $end
+$scope module TB_CASE_1 $end
+$var wire 9 c addra [8:0] $end
+$var wire 1 ) clka $end
+$var wire 16 d dina [15:0] $end
+$var wire 1 e ena $end
+$var wire 1 f regcea $end
+$var wire 1 0 rsta $end
+$var wire 1 g wea $end
+$var wire 16 h douta [15:0] $end
+$var parameter 224 i INIT_FILE $end
+$var parameter 32 j RAM_DEPTH $end
+$var parameter 128 k RAM_PERFORMANCE $end
+$var parameter 32 l RAM_WIDTH $end
+$var reg 16 m ram_data [15:0] $end
+$scope function clogb2 $end
+$var integer 32 n depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 16 o douta_reg [15:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$scope module TB_CASE_2 $end
+$var wire 9 p addra [8:0] $end
+$var wire 1 ) clka $end
+$var wire 16 q dina [15:0] $end
+$var wire 1 r ena $end
+$var wire 1 s regcea $end
+$var wire 1 0 rsta $end
+$var wire 1 t wea $end
+$var wire 16 u douta [15:0] $end
+$var parameter 224 v INIT_FILE $end
+$var parameter 32 w RAM_DEPTH $end
+$var parameter 128 x RAM_PERFORMANCE $end
+$var parameter 32 y RAM_WIDTH $end
+$var reg 16 z ram_data [15:0] $end
+$scope function clogb2 $end
+$var integer 32 { depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 16 | douta_reg [15:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$scope module TB_CASE_3 $end
+$var wire 9 } addra [8:0] $end
+$var wire 1 ) clka $end
+$var wire 16 ~ dina [15:0] $end
+$var wire 1 !" ena $end
+$var wire 1 "" regcea $end
+$var wire 1 0 rsta $end
+$var wire 1 #" wea $end
+$var wire 16 $" douta [15:0] $end
+$var parameter 224 %" INIT_FILE $end
+$var parameter 32 &" RAM_DEPTH $end
+$var parameter 128 '" RAM_PERFORMANCE $end
+$var parameter 32 (" RAM_WIDTH $end
+$var reg 16 )" ram_data [15:0] $end
+$scope function clogb2 $end
+$var integer 32 *" depth [31:0] $end
+$upscope $end
+$scope begin output_register $end
+$var reg 16 +" douta_reg [15:0] $end
+$upscope $end
+$scope begin use_init_file $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10000 ("
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 '"
+b110100010 &"
+b1100100011000010111010001100001001011110100100101010011010111110111001101110100011001010111001001100101011011110101111101110011011001100110001001011111011010010110010001111000010111110011001100101110011011010110010101101101 %"
+b10000 y
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 x
+b110011000 w
+b1100100011000010111010001100001001011110100100101010011010111110111001101110100011001010111001001100101011011110101111101110011011001100110001001011111011010010110010001111000010111110011001000101110011011010110010101101101 v
+b10000 l
+b1001000010010010100011101001000010111110101000001000101010100100100011001001111010100100100110101000001010011100100001101000101 k
+b110011000 j
+b1100100011000010111010001100001001011110100100101010011010111110111001101110100011001010111001001100101011011110101111101110011011001100110001001011111011010010110010001111000010111110011000100101110011011010110010101101101 i
+$end
+#0
+$dumpvars
+b0 +"
+bx *"
+b0 )"
+b0 $"
+0#"
+1""
+1!"
+b0 ~
+b0 }
+b0 |
+bx {
+b0 z
+b0 u
+0t
+1s
+1r
+b0 q
+b0 p
+b0 o
+bx n
+b0 m
+b0 h
+0g
+1f
+1e
+b0 d
+b0 c
+bx b
+bx a
+bx `
+bx _
+bx ^
+b10000000000000 ]
+b10000000000000 \
+b111 [
+bx Z
+bx Y
+bx X
+bx W
+bx V
+bx U
+bx T
+bx S
+bx R
+bx Q
+bx P
+bx O
+bx N
+bx M
+bx L
+bx K
+bx J
+xI
+bx H
+bx G
+b0 F
+b0 E
+b0 D
+b0 C
+b0 B
+b0 A
+b0 @
+b0 ?
+b0 >
+bx0 =
+b0 <
+b0 ;
+b1 :
+b10 9
+b0 8
+b0 7
+b100010 6
+b1 5
+b1000111 4
+13
+b0 2
+b0 1
+00
+b1 /
+b10 .
+0-
+b0 ,
+0+
+0*
+0)
+b0 (
+b100010 '
+b1 &
+b1000111 %
+bx $
+bx #
+x"
+x!
+$end
+#10000
+b1 m
+b1 )"
+bx0 Q
+bx0 R
+bx0000000000 S
+bx0000000000000000 P
+bx0000000000100010 N
+bx000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 _
+bx000000000000000000000000000000000000000000000000000000000000000000000000000000000000 ^
+bx0 T
+bx01 K
+bx1 b
+bx001000111 J
+bx10 U
+bx01 V
+b0 a
+b10 L
+b0 `
+0I
+1)
+#20000
+0)
+10
+#30000
+b0 =
+b0 #
+b0 O
+b0 $
+b0 M
+b0 H
+b0 G
+b0 Y
+b0 W
+b0 Z
+b0 X
+b0 Q
+b0 R
+b0 S
+b0 P
+b0 N
+b0 _
+b0 ^
+b0 T
+b0 K
+b0 b
+b0 J
+b0 U
+b0 V
+1)
+#40000
+0)
+00
+#50000
+b1 F
+b1 @
+b1 h
+b1 o
+b1 $"
+b1 +"
+b100010 N
+b1 K
+b1 b
+b1000111 J
+b10 U
+b1 V
+0"
+0!
+1)
+#60000
+0)
+1*
+#70000
+b10001110 =
+b10001 #
+b10001 O
+b10001 $
+b10001 M
+b1000100000000000000 H
+b1000100000000000000 G
+b100010 Y
+b100010 W
+b100010 Z
+b100010 X
+b1000100000000000100010 N
+b101 K
+b11 b
+b1000111001000111 J
+b1010 U
+b101 V
+b1 Q
+1)
+#80000
+0)
+0*
+#90000
+b100000000000000 ]
+b0 \
+b1100 #
+b1100 O
+b1100 $
+b1100 M
+b110000000000000000 H
+b110000000000000000 G
+b0 [
+b11000 Y
+b11000 W
+b1100000001010100010 Z
+b1100000001010100010 X
+b10 Q
+b1 L
+1I
+1)
+#100000
+0)
+#110000
+1"
+b0 Q
+1)
+#120000
+0)
+#130000
+0"
+1)
+#140000
+0)
+#150000
+1)
+#160000
+0)
+#170000
+1)
+#180000
+0)

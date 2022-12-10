@@ -231,8 +231,8 @@ def stereo(IN, main_data, side_info, header):
                             for win in range(3):
                                 is_pos = main_data["scalefac_s"][sfb][win]
                                 if is_pos < 7:
-                                    sfb_start = SHORT_sf_band_idx[sfb]*3 + win_len
-                                    sfb_stop = SHORT_sf_band_idx[sfb + 1] * 3
+                                    sfb_start = SHORT_sf_band_idx[sfb]*3 + win_len*win
+                                    sfb_stop = sfb_start + win_len
 
                                     for i in range(sfb_start, sfb_stop):
                                         OUT[gr][0][i] *= IS_L[is_pos]
@@ -245,7 +245,7 @@ def stereo(IN, main_data, side_info, header):
                             for win in range(3):
                                 is_pos = main_data["scalefac_s"][sfb][win]
                                 if is_pos < 7:
-                                    sfb_start = SHORT_sf_band_idx[sfb]*3 + win_len
+                                    sfb_start = SHORT_sf_band_idx[sfb]*3 + win_len*win
                                     sfb_stop = SHORT_sf_band_idx[sfb + 1] * 3
 
                                     for i in range(sfb_start, sfb_stop):
