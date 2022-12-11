@@ -73,7 +73,6 @@ def get_main_data_bits(bitstream, header, side_info, fifo_buffer):
     #first, remove all bits that come before the offset from the fifo buffer...
     num_main_data_bits = np.sum(side_info["part2_3_length"])
     num_discard_bits = fifo_buffer.buffer_size - (side_info["main_data_begin"] * 8)     #safe to discard any bits in buffer before the offset
-    print("discarding", num_discard_bits, "bits!")
 
     discard_bits = fifo_buffer.get(num_discard_bits)
 
@@ -96,8 +95,8 @@ def read_main(main_data_bitstream, header, side_info, verbose = False):
     else:
         nchannels = 2   #assume that joint stereo, stereo, and dual channel are all 2 channels
     #define 2 2D arrays:
-    scalefac_l = np.zeros(shape=(2, nchannels, 21   ), dtype=np.uint16)        #note that the 3rd dimension may only need 8 bits depending on the window, needs all 21 if window is normal or block type is normal
-    scalefac_s = np.zeros(shape=(2, nchannels, 12, 3), dtype=np.uint16)     #also might contain extraneous bits...
+    scalefac_l = np.zeros(shape=(2, nchannels, 23   ), dtype=np.uint16)        #note that the 3rd dimension may only need 8 bits depending on the window, needs all 21 if window is normal or block type is normal
+    scalefac_s = np.zeros(shape=(2, nchannels, 14, 3), dtype=np.uint16)     #also might contain extraneous bits...
     IS         = np.zeros(shape=(2, nchannels, 576  ), dtype=np.int)    #these are the decoded huffman values,
 
     ptr_start = 0           #add the part2_3_length to this value every segment
@@ -187,6 +186,8 @@ def huffmancodebits(bitstream, ptr, gr, ch, header, side_info, verbose=False):
         return OUT      #just return all 0s in the case where there is no data...
 
     #determine the region boundaries
+    region_1_start = 0
+    region_2_start = 0      #i think you need these defaults in case the
     if (side_info["window_switching_flag"][gr,ch] == 1) and (side_info["block_type"][gr,ch] == 2):
         region_1_start = 36
         region_2_start = 576
