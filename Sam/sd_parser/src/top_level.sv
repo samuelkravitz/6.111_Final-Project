@@ -73,7 +73,7 @@ module top_level(
   logic [7:0] sd_ram_out;
   logic [15:0] read_counter;
 
-  always_ff @(posedge clk_100mhz) begin : READ COUNTER
+  always_ff @(posedge clk_100mhz) begin
     if (sys_rst) begin
       read_counter <= 0;
     end else begin
@@ -84,7 +84,7 @@ module top_level(
 
   logic [15:0] bram_add;
   always_comb begin
-    bram_add = (read_counter < 511) ? read_counter : byte_index;
+    bram_add = (read_counter < 512) ? read_counter : byte_index;
   end
 
   xilinx_single_port_ram_read_first #(
@@ -96,7 +96,7 @@ module top_level(
     .addra(bram_add),     // Address bus, width determined from RAM_DEPTH
     .dina(dout),       // RAM input data, width determined from RAM_WIDTH
     .clka(clk_100mhz),       // Clock
-    .wea((~old_byte_avail && byte_available) && (read_counter < 511)),         // Write enable
+    .wea((~old_byte_avail && byte_available) && (read_counter < 512)),         // Write enable
     .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
     .rsta(sys_rst),       // Output reset (does not affect memory contents)
     .regcea(1'b1),   // Output register enable
@@ -104,10 +104,8 @@ module top_level(
   );
 
   always_comb begin
-    to_seven = {24'd0, sd_ram_out};
+    to_seven = {16'd0, read_counter};
   end
-
-  logic [31:0] read_counter;
 
   seven_segment_controller #(.COUNT_TO('d100_000)) sev_seg
                         (.clk_in(clk_100mhz),
@@ -123,8 +121,7 @@ module top_level(
       wr <= 0;
       din <= 0;
       addr <= 0;
-      read_counter <= 0;
-    end else if (ready && (read_counter < 511)) begin
+    end else if (ready && (read_counter < 512)) begin
       addr <= 31'd512;
       rd <= 1;
     end else begin
