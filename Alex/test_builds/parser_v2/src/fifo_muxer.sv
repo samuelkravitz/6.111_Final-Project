@@ -76,7 +76,7 @@ module fifo_muxer(
           //FIRST: save all the parameters from the inputs
           main_data_begin_save <= main_data_begin;
           part2_3_length_save <= part2_3_length;
-          num_discard_bits <= (fifo_sample_count >= main_data_begin) ? fifo_sample_count - main_data_begin : 0;    //i don't want to deal with underflow
+          num_discard_bits <= (fifo_sample_count >= (main_data_begin << 3)) ? fifo_sample_count - (main_data_begin << 3) : 0;    //i don't want to deal with underflow
 
           if (fifo_sample_count == main_data_begin) begin
             stage <= `HOLD;   //the reservoir has exactly the right number of bits, no need to discard
@@ -117,15 +117,18 @@ module fifo_muxer(
                   stage <= (grch == 2'd3) ? `WAIT : `HOLD;
                   grch <= grch + 1;
                 end else if ( ~target_sf_axiov ) begin
-                  bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                  // bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                  bit_counter <= bit_counter + 1;
                 end else begin
                   stage <= `HUFFMAN;
-                  bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                  // bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                  bit_counter <= bit_counter + 1;
                 end
               end
             `HUFFMAN : begin
-                if (bit_counter < target_p23_length) begin
-                  bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                if (bit_counter + 1'b1 < target_p23_length) begin
+                  // bit_counter <= (fifo_dout_v) ? bit_counter + 1 : bit_counter;
+                  bit_counter <= bit_counter + 1;
                 end else begin
                   bit_counter <= 0;
                   stage <= (grch == 2'd3) ? `WAIT : `HOLD;  //go back to waiting stage if both granules and channels are done

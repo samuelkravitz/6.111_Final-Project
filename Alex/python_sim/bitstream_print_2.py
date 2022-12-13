@@ -1,7 +1,7 @@
 from read_header import read_header, parse_frames, disp_frames
 from read_frame import FIFO, get_main_data_bits, read_main
 from side_info import read_side_information
-from requantizer import requantizer
+from requantizer import requantizer, reorder, stereo
 
 import numpy as np
 
@@ -55,43 +55,47 @@ disp_frames(frames[0:1])
 
 ################## EXAMPLE CASE FOR THE FIFO_MUXER.sv MODULE  ########################################
 # buffer = FIFO()
-# for i, header in enumerate(frames):
+# for i, header in enumerate(frames[0:3]):
 #     # print("reading information for frame:", i+1)
 #     nchannels = 1 if header["mode"] == 3 else 2
 #     side_info_start = header["loc"] + 32 + (16 if header["prot"] == 0 else 0)
 #     side_info, end_ptr = read_side_information(binary_string, side_info_start, nchannels)
 #     main_data_bits = get_main_data_bits(binary_string, header, side_info, buffer)
-#     output, ptr = read_main(main_data_bits, header, side_info, verbose = i ==241)
+#     output, ptr = read_main(main_data_bits, header, side_info, verbose = True)
+#     print("done with frame {}".format(i))
+#     # print("and the buffer has:", buffer.buffer_size)
+#     print(side_info)
+#     # print(header,"\n\n")
 #
-#     if i == 241:
-#         for key in side_info:
-#             try:
-#                 print(key, side_info[key][0][0])
-#             except TypeError:
-#                 print(key, side_info[key])
-#
-#         # print("scalefact_l[0][0]:", array2hex(output["scalefac_l"][0][0], 4))
-#         # print("scalefact_s[0][0]:", array2hex(output["scalefac_s"][0][0], 4))
-#         # print()
-#         # print("scalefact_l[0][1]:", array2hex(output["scalefac_l"][0][1], 4))
-#         # print("scalefact_s[0][1]:", array2hex(output["scalefac_s"][0][1], 4))
-#
-#         # bits = main_data_bits
-#         # hex_code = '{:0{}X}'.format(int(bits, 2), len(bits) // 4)
-#         # print("main data bits (length={}):".format(len(bits)),hex_code)
-#         #
-#         # print('main data bits for gr=0 ch=1')
-#         # bits = main_data_bits[side_info["part2_3_length"][0][0]:side_info["part2_3_length"][0][0] + side_info["part2_3_length"][0][1]]
-#         # print(bits)
-#         # print(len(bits))
-#
-#         for key in side_info:
-#             if key in side_info_key_sizes:
-#                 print(key, array2hex(side_info[key], side_info_key_sizes[key]))
-#             else:
-#                 print(key, side_info[key])
-#
-#         break
+#     # if i == 241:
+#     #     for key in side_info:
+#     #         try:
+#     #             print(key, side_info[key][0][0])
+#     #         except TypeError:
+#     #             print(key, side_info[key])
+#     #
+#     #     # print("scalefact_l[0][0]:", array2hex(output["scalefac_l"][0][0], 4))
+#     #     # print("scalefact_s[0][0]:", array2hex(output["scalefac_s"][0][0], 4))
+#     #     # print()
+#     #     # print("scalefact_l[0][1]:", array2hex(output["scalefac_l"][0][1], 4))
+#     #     # print("scalefact_s[0][1]:", array2hex(output["scalefac_s"][0][1], 4))
+#     #
+#     #     # bits = main_data_bits
+#     #     # hex_code = '{:0{}X}'.format(int(bits, 2), len(bits) // 4)
+#     #     # print("main data bits (length={}):".format(len(bits)),hex_code)
+#     #     #
+#     #     # print('main data bits for gr=0 ch=1')
+#     #     # bits = main_data_bits[side_info["part2_3_length"][0][0]:side_info["part2_3_length"][0][0] + side_info["part2_3_length"][0][1]]
+#     #     # print(bits)
+#     #     # print(len(bits))
+#     #
+#     #     for key in side_info:
+#     #         if key in side_info_key_sizes:
+#     #             print(key, array2hex(side_info[key], side_info_key_sizes[key]))
+#     #         else:
+#     #             print(key, side_info[key])
+#     #
+#     #     break
 
 ################## HUFFMAN DECODING TESTING ###########################
 # lmao = np.array([0,4,8,12,16,20,24,30,36,44,52,62,74,90,110,134,162,196,238,288,342,418,576])
@@ -131,31 +135,61 @@ disp_frames(frames[0:1])
 
 ##############QUANTIZER TESTING ####################################
 buffer = FIFO()
-for i, header in enumerate(frames):
+for i, header in enumerate(frames[0:5]):
+    print("NEW FRAME", i)
     nchannels = 1 if header["mode"] == 3 else 2
     side_info_start = header["loc"] + 32 + (16 if header["prot"] == 0 else 0)
     side_info, end_ptr = read_side_information(binary_string, side_info_start, nchannels)
     main_data_bits = get_main_data_bits(binary_string, header, side_info, buffer)
     main_data, ptr = read_main(main_data_bits, header, side_info, verbose = False)
-    req_out = requantizer(main_data, side_info, header, verbose = i == 81)
+    req_out = requantizer(main_data, side_info, header, verbose = False)
+    reorder_out = reorder(req_out, side_info, header)
+    stereo_out = stereo(reorder_out, main_data, side_info, header)
 
-    if i == 45:
-        print('\n\nhex values of side information (gr=0 ch=0):')
-        for key, value in side_info.items():
-            try:
-                if len(value.shape) == 2:
-                    print(key, side_info[key][0][0], hex(side_info[key][0][0]) )
-                else:
-                    print(key, side_info[key][0][0].flatten(), array2hex(side_info[key][0][0], side_info_key_sizes[key]))
-            except:
-                print(key, side_info[key], hex(side_info[key]))
+    print("Stereo VALUES:")
+    for gr in range(2):
+        for ch in range(2):
+            print("GR = {}, ch = {}".format(gr,ch))
+            print(list(stereo_out[gr,ch]))
 
-        print("scalefac_s:", array2hex(main_data["scalefac_s"][0,0], 4))
-        print("scalefac_l:", array2hex(main_data["scalefac_l"][0,0], 4))
+    # if i in (1,2):
+    #     print("FOR ", i)
+    #     # print('\n\nhex values of side information (gr=0 ch=0):')
+    #     # for key, value in side_info.items():
+    #     #     try:
+    #     #         if len(value.shape) == 2:
+    #     #             print(key, side_info[key][0][0], hex(side_info[key][0][0]) )
+    #     #         else:
+    #     #             print(key, side_info[key][0][0].flatten(), array2hex(side_info[key][0][0], side_info_key_sizes[key]))
+    #     #     except:
+    #     #         print(key, side_info[key], hex(side_info[key]))
+    #
+    #     print("huffman codes:")
+    #     print(list(main_data["IS"][0][0].flatten()))
+    #     print('requantized:')
+    #     print(list(req_out[0][0].flatten()))
 
-        print("huffman codes:")
-        print(list(main_data["IS"][0][0].flatten()))
-        print('requantized:')
-        print(list(req_out[0][0].flatten()))
+        # print("ACTUAL BITS:")
+        # print(main_data_bits)
 
-        break
+
+
+        # print('\n\nhex values of side information (gr=1 ch=0):')
+        # for key, value in side_info.items():
+        #     try:
+        #         if len(value.shape) == 2:
+        #             print(key, side_info[key][1][0], hex(side_info[key][1][0]) )
+        #         else:
+        #             print(key, side_info[key][1][0].flatten(), array2hex(side_info[key][1][0], side_info_key_sizes[key]))
+        #     except:
+        #         print(key, side_info[key], hex(side_info[key]))
+        #
+        # print("scalefac_s:", array2hex(main_data["scalefac_s"][1,0], 4))
+        # print("scalefac_l:", array2hex(main_data["scalefac_l"][1,0], 4))
+
+        # print("huffman codes:")
+        # print(list(main_data["IS"][1][0].flatten()))
+        # print('requantized:')
+        # print(list(req_out[1][0].flatten()))
+
+        # break

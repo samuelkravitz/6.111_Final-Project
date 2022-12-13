@@ -82,6 +82,15 @@ module sf_parser #(parameter GR = 0,
       endcase
     end
 
+    logic [8:0] A, B, C, D;
+
+    always_comb begin
+      A = (~scfsi[0] || ~GR) ? bitlen_1 * 6 : 0;
+      B = (~scfsi[1] || ~GR) ? bitlen_1 * 5 : 0;
+      C = (~scfsi[2] || ~GR) ? bitlen_2 * 5 : 0;
+      D = (~scfsi[3] || ~GR) ? bitlen_2 * 5 : 0;
+    end
+
     logic [3:0] buffer;   //needs atmost 4 bits at a time.
     logic [31:0] bit_counter;  //idk what the max is. whatever
     logic [2:0] shift_1, shift_2;
@@ -95,7 +104,7 @@ module sf_parser #(parameter GR = 0,
       end else if (window_switching_flag && (block_type == 2)) begin
         axiov = (bit_counter == (18 * bitlen_1 + 18 * bitlen_2)) ? 1 : 0;
       end else begin
-        axiov = (bit_counter == (11 * bitlen_1) + 10 * (bitlen_2)) ? 1: 0;
+        axiov = (bit_counter == A + B + C + D) ? 1: 0;
       end
     end
 
@@ -127,7 +136,7 @@ module sf_parser #(parameter GR = 0,
         end else begin
 
                         if (axiiv) begin
-                          buffer <= {buffer[3:0], axiid};
+                          buffer <= {buffer[2:0], axiid};
                           bit_counter <= bit_counter + 1;
                         end
 
@@ -217,46 +226,72 @@ module sf_parser #(parameter GR = 0,
                               else if (bit_counter == (18 * bitlen_1 + 18 * bitlen_2)) begin
                                 scalefac_s[11][2] <= (buffer << shift_2) >> shift_2;
                               end
-
                         end
 
                         else begin
                           //the default window. dont worry about copying over teh scalefactors when the gr == 1 here. do that upstream
-                          if ((~GR) || ~scfsi[0]) begin
+                          if (~GR) begin
                             if      (bit_counter == 1 * (bitlen_1)) scalefac_l[0] <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 2 * (bitlen_1)) scalefac_l[1] <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 3 * (bitlen_1)) scalefac_l[2] <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 4 * (bitlen_1)) scalefac_l[3] <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 5 * (bitlen_1)) scalefac_l[4] <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 6 * (bitlen_1)) scalefac_l[5] <= (buffer << shift_1) >> shift_1;
-                          end
 
-                          if (~GR || ~scfsi[1]) begin
-                            if      (bit_counter == 7 * (bitlen_1)) scalefac_l[6]  <= (buffer << shift_1) >> shift_1;
+                            else if (bit_counter == 7 * (bitlen_1)) scalefac_l[6]  <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 8 * (bitlen_1)) scalefac_l[7]  <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 9 * (bitlen_1)) scalefac_l[8]  <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 10 * (bitlen_1)) scalefac_l[9]  <= (buffer << shift_1) >> shift_1;
                             else if (bit_counter == 11 * (bitlen_1)) scalefac_l[10] <= (buffer << shift_1) >> shift_1;
-                          end
 
-                          if (~GR || ~scfsi[2]) begin
-                            if      (bit_counter == (11 * bitlen_1) + (1 * bitlen_2)) scalefac_l[11]  <= (buffer << shift_1) >> shift_1;
-                            else if (bit_counter == (11 * bitlen_1) + (2 * bitlen_2)) scalefac_l[12]  <= (buffer << shift_1) >> shift_1;
-                            else if (bit_counter == (11 * bitlen_1) + (3 * bitlen_2)) scalefac_l[13]  <= (buffer << shift_1) >> shift_1;
-                            else if (bit_counter == (11 * bitlen_1) + (4 * bitlen_2)) scalefac_l[14]  <= (buffer << shift_1) >> shift_1;
-                            else if (bit_counter == (11 * bitlen_1) + (5 * bitlen_2)) scalefac_l[15]  <= (buffer << shift_1) >> shift_1;
-                          end
+                            else if (bit_counter == (11 * bitlen_1) + (1 * bitlen_2)) scalefac_l[11]  <= (buffer << shift_2) >> shift_2;
+                            else if (bit_counter == (11 * bitlen_1) + (2 * bitlen_2)) scalefac_l[12]  <= (buffer << shift_2) >> shift_2;
+                            else if (bit_counter == (11 * bitlen_1) + (3 * bitlen_2)) scalefac_l[13]  <= (buffer << shift_2) >> shift_2;
+                            else if (bit_counter == (11 * bitlen_1) + (4 * bitlen_2)) scalefac_l[14]  <= (buffer << shift_2) >> shift_2;
+                            else if (bit_counter == (11 * bitlen_1) + (5 * bitlen_2)) scalefac_l[15]  <= (buffer << shift_2) >> shift_2;
 
-                          if (~GR || ~scfsi[3]) begin
                             if      (bit_counter == (11 * bitlen_1) + 6 *  (bitlen_2)) scalefac_l[16]  <= (buffer << shift_2) >> shift_2;
                             else if (bit_counter == (11 * bitlen_1) + 7 *  (bitlen_2)) scalefac_l[17]  <= (buffer << shift_2) >> shift_2;
                             else if (bit_counter == (11 * bitlen_1) + 8 *  (bitlen_2)) scalefac_l[18]  <= (buffer << shift_2) >> shift_2;
                             else if (bit_counter == (11 * bitlen_1) + 9 *  (bitlen_2)) scalefac_l[19]  <= (buffer << shift_2) >> shift_2;
-                            else if (bit_counter == (11 * bitlen_1) + 10 * (bitlen_2)) begin
-                              scalefac_l[20]  <= (buffer << shift_2) >> shift_2;
-                            end
-                          end
+                            else if (bit_counter == (11 * bitlen_1) + 10 * (bitlen_2)) scalefac_l[20]  <= (buffer << shift_2) >> shift_2;
 
+                          end else begin
+                              if (~scfsi[0]) begin
+                                if      (bit_counter == 1 * (bitlen_1)) scalefac_l[0] <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == 2 * (bitlen_1)) scalefac_l[1] <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == 3 * (bitlen_1)) scalefac_l[2] <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == 4 * (bitlen_1)) scalefac_l[3] <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == 5 * (bitlen_1)) scalefac_l[4] <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == 6 * (bitlen_1)) scalefac_l[5] <= (buffer << shift_1) >> shift_1;
+                              end
+
+                              if (~scfsi[1]) begin
+                                if      (bit_counter == A + 1 * (bitlen_1)) scalefac_l[6]  <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == A + 2 * (bitlen_1)) scalefac_l[7]  <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == A + 3 * (bitlen_1)) scalefac_l[8]  <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == A + 4 * (bitlen_1)) scalefac_l[9]  <= (buffer << shift_1) >> shift_1;
+                                else if (bit_counter == A + 5 * (bitlen_1)) scalefac_l[10] <= (buffer << shift_1) >> shift_1;
+                              end
+
+                              if (~scfsi[2]) begin
+                                if      (bit_counter == (A + B) + (1 * bitlen_2)) scalefac_l[11]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B) + (2 * bitlen_2)) scalefac_l[12]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B) + (3 * bitlen_2)) scalefac_l[13]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B) + (4 * bitlen_2)) scalefac_l[14]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B) + (5 * bitlen_2)) scalefac_l[15]  <= (buffer << shift_2) >> shift_2;
+                              end
+
+                              if (~scfsi[3]) begin
+                                if      (bit_counter == (A + B + C) + 1 *  (bitlen_2)) scalefac_l[16]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B + C) + 2 *  (bitlen_2)) scalefac_l[17]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B + C) + 3 *  (bitlen_2)) scalefac_l[18]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B + C) + 4 *  (bitlen_2)) scalefac_l[19]  <= (buffer << shift_2) >> shift_2;
+                                else if (bit_counter == (A + B + C) + 5 * (bitlen_2)) begin
+                                  scalefac_l[20]  <= (buffer << shift_2) >> shift_2;
+                                end
+                              end
+                            end
                         end
 
 

@@ -54,20 +54,38 @@ module plexer(
     end else begin
             if (status) begin
               data_out_valid <= axiiv;
-              if (axiiv) begin
-                data_out <= axiid;
-                byte_counter <= byte_counter + 1;
-                if (byte_counter < (crc_length)) output_codeword <= 3'b100;
-                else if (byte_counter < (crc_length + side_info_length)) output_codeword <= 3'b010;
-                else if (byte_counter + 3'd4 < frame_size_saved) output_codeword <= 3'b001;
-                else if (byte_counter + 3'd4 < frame_size_saved + 3'd3) output_codeword <= 3'b000;
-                else begin
-                  output_codeword <= 3'b000;
-                  status <= 0;
-                  byte_counter <= 0;
-                end
+              data_out <= axiid;
+
+              if (byte_counter < (crc_length)) output_codeword <= 3'b100;
+              else if (byte_counter < (crc_length + side_info_length)) output_codeword <= 3'b010;
+              else if (byte_counter + 3'd4 < frame_size_saved) output_codeword <= 3'b001;
+              // else if (byte_counter + 3'd4 < frame_size_saved + 3'd4) output_codeword <= 3'b000;
+              else begin
+                output_codeword <= 3'b000;
+                status <= 0;
+                byte_counter <= 0;
               end
+
+              byte_counter <= (axiiv) ? byte_counter + 1 : byte_counter;
             end
+
+
+            // if (status) begin
+            //   data_out_valid <= axiiv;
+            //   if (axiiv) begin
+            //     data_out <= axiid;
+            //     byte_counter <= byte_counter + 1;
+            //     if (byte_counter < (crc_length)) output_codeword <= 3'b100;
+            //     else if (byte_counter < (crc_length + side_info_length)) output_codeword <= 3'b010;
+            //     else if (byte_counter + 3'd4 < frame_size_saved) output_codeword <= 3'b001;
+            //     // else if (byte_counter + 3'd4 < frame_size_saved + 3'd4) output_codeword <= 3'b000;
+            //     else begin
+            //       output_codeword <= 3'b000;
+            //       status <= 0;
+            //       byte_counter <= 0;
+            //     end
+            //   end
+            // end
 
             else if (valid_header) begin
             //this means a header was deteced. update the parameters of the frame:

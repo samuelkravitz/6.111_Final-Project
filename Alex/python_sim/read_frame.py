@@ -74,6 +74,9 @@ def get_main_data_bits(bitstream, header, side_info, fifo_buffer):
     num_main_data_bits = np.sum(side_info["part2_3_length"])
     num_discard_bits = fifo_buffer.buffer_size - (side_info["main_data_begin"] * 8)     #safe to discard any bits in buffer before the offset
 
+    print("number of discard bits:", num_discard_bits)
+    print("SIZE OF BUFFER BEFORE SUBTRACTING:", fifo_buffer.buffer_size)
+
     discard_bits = fifo_buffer.get(num_discard_bits)
 
     frame_data_start = header["loc"] + 8 *(4 + side_info_size + crc_prot_size)
@@ -102,6 +105,7 @@ def read_main(main_data_bitstream, header, side_info, verbose = False):
     ptr_start = 0           #add the part2_3_length to this value every segment
     for gr in range(2):
         for ch in range(nchannels):
+
             data_length     = side_info["part2_3_length"][gr,ch]    #number of bits used for this granule and channel
             bitstream       = main_data_bitstream[ptr_start:ptr_start + data_length]      #constructs the bitstream specific to the granule and channel
 
@@ -156,7 +160,7 @@ def read_main(main_data_bitstream, header, side_info, verbose = False):
                     for sfb in range(16,21):
                         scalefac_l[1,ch,sfb]                       = scalefac_l[0,ch,sfb]       #copy the scalefactors over
 
-            IS[gr,ch,:] = huffmancodebits(bitstream[ptr:data_length], 0, gr, ch, header, side_info, verbose)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to 0
+            IS[gr,ch,:] = huffmancodebits(bitstream[ptr:data_length], 0, gr, ch, header, side_info, verbose)     ####NOTE: now this only passes in the data for a granule and channel, no more. ptr for it is set to
             if verbose:
                 print("huffman bitstream for gr: {}, ch: {} has length {}".format(gr,ch, data_length-ptr))
                 print(bitstream[ptr:data_length])

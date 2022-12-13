@@ -53,20 +53,20 @@ always begin
 end
 
 initial begin
-  $dumpfile("sim/requantizer_v3.vcd");
+  $dumpfile("sim/requantizer_v3_p2.vcd");
   $dumpvars(0, requantizer_tb);
   $display("Starting Sim");
 
-  window_switching_flag = 0;
-  block_type = 0;
+  window_switching_flag = 1;
+  block_type = 1;
   mixed_block_flag = 0;
   scalefac_scale = 0;
-  global_gain = 159;
+  global_gain = 166;
   preflag = 0;
   subblock_gain = 0;
-  big_values = 217;
+  big_values = 71;
 
-  scalefac_l_in = 8'h10;
+  scalefac_l_in = 0;
   scalefac_s_in = 0;
 
   clk = 0;
@@ -84,74 +84,74 @@ initial begin
 
   din_valid = 1;
 
-  x_in = 7;
+  x_in = 3;
   is_pos = 0;
   #20;
 
-  x_in = 15'sd4;
+  x_in = 15'sd2;
   is_pos = 1;
   #20;
 
 
-  x_in = -15'sd4;
+  x_in = 15'sd0;
   is_pos = 2;
   #20;
 
 
-  x_in = 15'sd32;
+  x_in = -15'sd2;
   is_pos = 3;
   #20;
 
 
-  x_in = -15'sd9;
+  x_in = -15'sd4;
   is_pos = 4;
   #20;
   din_valid = 0;
 
   #200;
 
-  window_switching_flag = 0;
-  block_type = 0;
-  mixed_block_flag = 0;
-  scalefac_scale = 0;
-  global_gain = 161;
-  preflag = 0;
-  subblock_gain = 0;
-  big_values = 204;
-
-  scalefac_l_in = 84'h343010000001000012000;
-  scalefac_s_in = 0;
-
-
-    din_valid = 1;
-
-    x_in = 29;
-    is_pos = 0;
-    #20;
-
-    x_in = -16'sd31;
-    is_pos = 1;
-    #20;
-
-    x_in = -16'sd14;
-    is_pos = 2;
-    #20;
-
-    x_in = 16'sd26;
-    is_pos = 3;
-    #20;
-
-    x_in = 16'sd1;
-    is_pos = 4;
-    #20;
-
-    x_in = 16'sd5;
-    is_pos = 5;
-    #20;
-
-    din_valid = 0;
-    
-    #200;
+  // window_switching_flag = 0;
+  // block_type = 0;
+  // mixed_block_flag = 0;
+  // scalefac_scale = 0;
+  // global_gain = 161;
+  // preflag = 0;
+  // subblock_gain = 0;
+  // big_values = 204;
+  //
+  // scalefac_l_in = 84'h343010000001000012000;
+  // scalefac_s_in = 0;
+  //
+  //
+  //   din_valid = 1;
+  //
+  //   x_in = 29;
+  //   is_pos = 0;
+  //   #20;
+  //
+  //   x_in = -16'sd31;
+  //   is_pos = 1;
+  //   #20;
+  //
+  //   x_in = -16'sd14;
+  //   is_pos = 2;
+  //   #20;
+  //
+  //   x_in = 16'sd26;
+  //   is_pos = 3;
+  //   #20;
+  //
+  //   x_in = 16'sd1;
+  //   is_pos = 4;
+  //   #20;
+  //
+  //   x_in = 16'sd5;
+  //   is_pos = 5;
+  //   #20;
+  //
+  //   din_valid = 0;
+  //
+  //   #200;
 
 
   $display("Finishing Sim");
