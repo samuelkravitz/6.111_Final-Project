@@ -1,0 +1,29 @@
+$date
+	Thu Dec 08 23:36:41 2022
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module mult_tb $end
+$var reg 16 ! A [15:0] $end
+$var reg 16 " B [15:0] $end
+$var reg 32 # C [31:0] $end
+$var reg 16 $ D [15:0] $end
+$var reg 1 % clk $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+x%
+b11001001111001 $
+b1110011100000100001010010000 #
+b11110011001100 "
+b11110011001100 !
+$end
+#20000
